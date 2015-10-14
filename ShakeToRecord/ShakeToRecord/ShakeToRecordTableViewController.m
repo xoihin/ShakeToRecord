@@ -10,18 +10,25 @@
 
 @interface ShakeToRecordTableViewController ()
 
+
+@property (nonatomic, strong) NSMutableArray *mediaArray;
+
+
 @end
+
+
 
 @implementation ShakeToRecordTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+    self.title = NSLocalizedString(@"Library", @"Library");
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    // Enable Edit/Done button
+    self.navigationItem.leftBarButtonItem = self.editButtonItem;
+
+    [self loadAllFiles];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -31,30 +38,78 @@
 
 
 
+- (void)loadAllFiles {
+    
+    // Init
+    _mediaArray = [[NSMutableArray alloc]init];
+    
+    // full path to Documents directory
+    NSArray *paths =NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *folderPath = [paths objectAtIndex:0];
+    
+    NSError* errVal;
+    NSArray * directoryList = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:folderPath error:&errVal];
+    
+    
+    for (int iX = 0; iX < [directoryList count]; iX++)
+    {
+        // get file name
+        NSString* fileName = (NSString*)[directoryList objectAtIndex:iX];
+        
+        // extract file extension
+        NSArray* fileNameComponents = [fileName componentsSeparatedByString:@"."];
+        if ([fileNameComponents count] < 2)
+            continue;
+        
+        NSString* fileExtension = (NSString*)[fileNameComponents objectAtIndex:([fileNameComponents count] - 1)];
+        
+        if (([fileExtension isEqualToString:@"mp3"]) ||
+            ([fileExtension isEqualToString:@"MP3"]) ||
+            ([fileExtension isEqualToString:@"M4R"]) ||
+            ([fileExtension isEqualToString:@"m4r"]) ||
+            ([fileExtension isEqualToString:@"m4a"]) ||
+            ([fileExtension isEqualToString:@"M4A"]))
+        {
+            [_mediaArray addObject:fileName];
+        }
+    }
+    
+    // Sort media files by name
+//    _mediaArray =[[_mediaArray sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] mutableCopy];
+    _mediaArray  = [[[[_mediaArray sortedArrayUsingSelector:@selector(compare:)] reverseObjectEnumerator] allObjects] mutableCopy];
+}
+
+
+
+
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return _mediaArray.count;
 }
 
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    
     
     // Configure the cell...
+    NSString *fileNoExtension = [[NSString alloc]init];
+    fileNoExtension = [_mediaArray objectAtIndex:indexPath.row];
+    
+    cell.textLabel.text = [[fileNoExtension lastPathComponent]stringByDeletingPathExtension];
     
     return cell;
 }
-*/
+
 
 /*
 // Override to support conditional editing of the table view.
