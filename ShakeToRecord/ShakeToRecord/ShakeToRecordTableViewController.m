@@ -80,7 +80,7 @@
     
     // Sort
 //    _mediaArray =[[_mediaArray sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] mutableCopy];
-    _mediaArray  = [[[[_mediaArray sortedArrayUsingSelector:@selector(compare:)] reverseObjectEnumerator] allObjects] mutableCopy];
+    _mediaArray  = [[[[_mediaArray sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] reverseObjectEnumerator] allObjects] mutableCopy];
 }
 
 
@@ -90,6 +90,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
     [self becomeFirstResponder];
 }
 
@@ -103,17 +104,19 @@
         // Vibrate
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
         
-        
-//        if (self.view.hidden == YES) {
-//            [self.view setHidden:NO];
-//        } else {
-//            [self.view setHidden:YES];
-//        }
-        
+        if (self.view.hidden == YES) {
+            [self.view setHidden:NO];
+            [[self navigationController] setNavigationBarHidden:NO animated:YES];
+            // Stop recording
+        } else {
+            [self.view setHidden:YES];
+            [[self navigationController] setNavigationBarHidden:YES animated:YES];
+            // Start recording
+        }
     }
 }
 
-- (BOOL)canBecomeFirstResponder
+- (BOOL)BecomeFirstResponder
 {
     return YES;
 }
