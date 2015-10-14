@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  ShakeToRecordTableViewController.h
 //  ShakeToRecord
 //
 //  Created by Xoi's iMac on 2015-10-13.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
-
+@interface ShakeToRecordTableViewController : UITableViewController
 
 @end
-

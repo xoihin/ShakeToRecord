@@ -9,11 +9,11 @@
 /* Begin PBXBuildFile section */
 		F6654BD41BCDDA870054072A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F6654BD31BCDDA870054072A /* main.m */; };
 		F6654BD71BCDDA870054072A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F6654BD61BCDDA870054072A /* AppDelegate.m */; };
-		F6654BDA1BCDDA870054072A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F6654BD91BCDDA870054072A /* ViewController.m */; };
 		F6654BDD1BCDDA870054072A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6654BDB1BCDDA870054072A /* Main.storyboard */; };
 		F6654BDF1BCDDA870054072A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F6654BDE1BCDDA870054072A /* Images.xcassets */; };
 		F6654BE21BCDDA870054072A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F6654BE01BCDDA870054072A /* LaunchScreen.xib */; };
 		F6654BEE1BCDDA870054072A /* ShakeToRecordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F6654BED1BCDDA870054072A /* ShakeToRecordTests.m */; };
+		F69E640B1BCDDB9A006E993F /* ShakeToRecordTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F69E640A1BCDDB9A006E993F /* ShakeToRecordTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,14 +32,14 @@
 		F6654BD31BCDDA870054072A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F6654BD51BCDDA870054072A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F6654BD61BCDDA870054072A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		F6654BD81BCDDA870054072A /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		F6654BD91BCDDA870054072A /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		F6654BDC1BCDDA870054072A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F6654BDE1BCDDA870054072A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F6654BE11BCDDA870054072A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		F6654BE71BCDDA870054072A /* ShakeToRecordTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShakeToRecordTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6654BEC1BCDDA870054072A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F6654BED1BCDDA870054072A /* ShakeToRecordTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShakeToRecordTests.m; sourceTree = "<group>"; };
+		F69E64091BCDDB9A006E993F /* ShakeToRecordTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShakeToRecordTableViewController.h; sourceTree = "<group>"; };
+		F69E640A1BCDDB9A006E993F /* ShakeToRecordTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShakeToRecordTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,8 +83,8 @@
 			children = (
 				F6654BD51BCDDA870054072A /* AppDelegate.h */,
 				F6654BD61BCDDA870054072A /* AppDelegate.m */,
-				F6654BD81BCDDA870054072A /* ViewController.h */,
-				F6654BD91BCDDA870054072A /* ViewController.m */,
+				F69E64091BCDDB9A006E993F /* ShakeToRecordTableViewController.h */,
+				F69E640A1BCDDB9A006E993F /* ShakeToRecordTableViewController.m */,
 				F6654BDB1BCDDA870054072A /* Main.storyboard */,
 				F6654BDE1BCDDA870054072A /* Images.xcassets */,
 				F6654BE01BCDDA870054072A /* LaunchScreen.xib */,
@@ -219,9 +219,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F6654BDA1BCDDA870054072A /* ViewController.m in Sources */,
 				F6654BD71BCDDA870054072A /* AppDelegate.m in Sources */,
 				F6654BD41BCDDA870054072A /* main.m in Sources */,
+				F69E640B1BCDDB9A006E993F /* ShakeToRecordTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -416,6 +416,7 @@
 				F6654BF31BCDDA870054072A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F6654BF41BCDDA870054072A /* Build configuration list for PBXNativeTarget "ShakeToRecordTests" */ = {
 			isa = XCConfigurationList;
@@ -424,6 +425,7 @@
 				F6654BF61BCDDA870054072A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
