@@ -14,7 +14,10 @@
 
 
 @interface ShakeToRecordTableViewController () <AVAudioRecorderDelegate, AVAudioPlayerDelegate>
-
+{
+    NSString *myFileName;
+    NSString *myLastFileName;
+}
 
 @property (nonatomic, strong) NSMutableArray *mediaArray;
 
@@ -24,8 +27,9 @@
 @property (nonatomic, strong) NSArray *paths;
 @property (nonatomic, strong) NSString *folderPath;
 
-@property (nonatomic, strong) NSString *myFileName;
-
+//@property (nonatomic, strong) NSString *myFileName;
+//@property (nonatomic, strong) NSString *myLastFileName;
+//
 
 
 @end
@@ -109,10 +113,12 @@
 - (void)prepareToRecord {
     
     [self myAudioName];
+    
+    myLastFileName = myFileName;
 
     NSArray *pathComponents = [NSArray arrayWithObjects:
                                [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject],
-                               _myFileName, nil];
+                               myFileName, nil];
     
     NSURL *outputFileURL = [NSURL fileURLWithPathComponents:pathComponents];
     
@@ -165,15 +171,15 @@
 
 - (void)myAudioName{
     
-    _myFileName = @"";
+    myFileName = @"";
     
     NSDate *myCurrentdate = [NSDate date];
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"yyyyMMdd_HHmmss"];
     NSString *myDate = [dateFormat stringFromDate: myCurrentdate];
     
-    _myFileName = [NSString stringWithFormat:@"%@%@%@", @"z_", myDate, @".m4a"];
-    NSLog(@"File name is: %@", _myFileName);
+    myFileName = [NSString stringWithFormat:@"%@%@%@", @"z_", myDate, @".m4a"];
+    NSLog(@"File name is: %@", myFileName);
     
 }
 
@@ -197,17 +203,18 @@
     {
         NSLog(@"Shake detected...");
         
-        // Vibrate
-        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-        
         if (self.view.hidden == YES) {
             [self.view setHidden:NO];
             [[self navigationController] setNavigationBarHidden:NO animated:YES];
+            [[self navigationController] setToolbarHidden:NO];
             // Stop recording
             [self stopRecording];
+             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
         } else {
+             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
             [self.view setHidden:YES];
             [[self navigationController] setNavigationBarHidden:YES animated:YES];
+            [[self navigationController] setToolbarHidden:YES];
             // Start recording
             [self startRecording];
         }
@@ -245,6 +252,14 @@
     // Configure the cell...
     NSString *fileNoExtension = [[NSString alloc]init];
     fileNoExtension = [_mediaArray objectAtIndex:indexPath.row];
+    
+    NSLog(@"%@ %@", fileNoExtension, myLastFileName);
+    
+    if ([fileNoExtension isEqualToString:myLastFileName]) {
+        cell.textLabel.textColor = [UIColor orangeColor];
+    } else {
+        cell.textLabel.textColor = [UIColor blackColor];
+    }
     
     cell.textLabel.text = [[fileNoExtension lastPathComponent]stringByDeletingPathExtension];
     
