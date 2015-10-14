@@ -7,6 +7,10 @@
 //
 
 #import "ShakeToRecordTableViewController.h"
+#import <AudioToolbox/AudioToolbox.h>
+
+
+
 
 @interface ShakeToRecordTableViewController ()
 
@@ -28,7 +32,7 @@
     // Enable Edit/Done button
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
-    [self loadAllFiles];
+    [self loadAudiofiles];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -38,7 +42,7 @@
 
 
 
-- (void)loadAllFiles {
+- (void)loadAudiofiles {
     
     // Init
     _mediaArray = [[NSMutableArray alloc]init];
@@ -47,8 +51,8 @@
     NSArray *paths =NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *folderPath = [paths objectAtIndex:0];
     
-    NSError* errVal;
-    NSArray * directoryList = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:folderPath error:&errVal];
+    NSError *errVal;
+    NSArray *directoryList = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:folderPath error:&errVal];
     
     
     for (int iX = 0; iX < [directoryList count]; iX++)
@@ -74,10 +78,46 @@
         }
     }
     
-    // Sort media files by name
+    // Sort
 //    _mediaArray =[[_mediaArray sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] mutableCopy];
     _mediaArray  = [[[[_mediaArray sortedArrayUsingSelector:@selector(compare:)] reverseObjectEnumerator] allObjects] mutableCopy];
 }
+
+
+
+
+#pragma mark - Detect shake gesture
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self becomeFirstResponder];
+}
+
+
+- (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event
+{
+    if(event.type == UIEventSubtypeMotionShake)
+    {
+        NSLog(@"Shake detected...");
+        
+        // Vibrate
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+        
+        
+//        if (self.view.hidden == YES) {
+//            [self.view setHidden:NO];
+//        } else {
+//            [self.view setHidden:YES];
+//        }
+        
+    }
+}
+
+- (BOOL)canBecomeFirstResponder
+{
+    return YES;
+}
+
 
 
 
