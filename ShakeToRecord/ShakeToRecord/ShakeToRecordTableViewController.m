@@ -8,14 +8,24 @@
 
 #import "ShakeToRecordTableViewController.h"
 #import <AudioToolbox/AudioToolbox.h>
+#import <AVFoundation/AVFoundation.h>
 
 
 
 
-@interface ShakeToRecordTableViewController ()
+@interface ShakeToRecordTableViewController () <AVAudioRecorderDelegate, AVAudioPlayerDelegate>
 
 
 @property (nonatomic, strong) NSMutableArray *mediaArray;
+
+@property (nonatomic, strong) AVAudioRecorder *myAudioRecorder;
+@property (nonatomic, strong) AVAudioPlayer *myAudioPlayer;
+
+@property (nonatomic, strong) NSArray *paths;
+@property (nonatomic, strong) NSString *folderPath;
+
+@property (nonatomic, strong) NSString *myFileName;
+
 
 
 @end
@@ -32,7 +42,18 @@
     // Enable Edit/Done button
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
+    // full path to Documents directory
+    _paths =NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    _folderPath = [_paths objectAtIndex:0];
+    
+    // Load files to array
     [self loadAudiofiles];
+    
+    // Prepare to record
+    [self prepareToRecord];
+    
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -47,12 +68,8 @@
     // Init
     _mediaArray = [[NSMutableArray alloc]init];
     
-    // full path to Documents directory
-    NSArray *paths =NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *folderPath = [paths objectAtIndex:0];
-    
     NSError *errVal;
-    NSArray *directoryList = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:folderPath error:&errVal];
+    NSArray *directoryList = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:_folderPath error:&errVal];
     
     
     for (int iX = 0; iX < [directoryList count]; iX++)
@@ -71,6 +88,8 @@
             ([fileExtension isEqualToString:@"MP3"]) ||
             ([fileExtension isEqualToString:@"M4R"]) ||
             ([fileExtension isEqualToString:@"m4r"]) ||
+            ([fileExtension isEqualToString:@"CAF"]) ||
+            ([fileExtension isEqualToString:@"caf"]) ||
             ([fileExtension isEqualToString:@"m4a"]) ||
             ([fileExtension isEqualToString:@"M4A"]))
         {
@@ -82,6 +101,83 @@
 //    _mediaArray =[[_mediaArray sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] mutableCopy];
     _mediaArray  = [[[[_mediaArray sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] reverseObjectEnumerator] allObjects] mutableCopy];
 }
+
+
+
+#pragma mark - Audio Hanlding
+
+- (void)prepareToRecord {
+    
+    [self myAudioName];
+
+    NSArray *pathComponents = [NSArray arrayWithObjects:
+                               [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject],
+                               _myFileName, nil];
+    
+    NSURL *outputFileURL = [NSURL fileURLWithPathComponents:pathComponents];
+    
+    // Setup audio session
+    NSError *error = nil;
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    [session setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
+    
+    // Define the recorder setting
+    NSMutableDictionary *recordSetting = [[NSMutableDictionary alloc] init];
+    
+    [recordSetting setValue:[NSNumber numberWithInt:kAudioFormatMPEG4AAC] forKey:AVFormatIDKey];
+    [recordSetting setValue:[NSNumber numberWithFloat:44100.0] forKey:AVSampleRateKey];
+    [recordSetting setValue:[NSNumber numberWithInt: 2] forKey:AVNumberOfChannelsKey];
+    
+    _myAudioRecorder = [[AVAudioRecorder alloc] initWithURL:outputFileURL settings:recordSetting error:&error];
+    _myAudioRecorder.delegate = self;
+    
+    if (error)
+    {
+        NSLog(@"error: %@", [error localizedDescription]);
+    }
+    
+}
+
+
+- (void)startRecording {
+    if (!_myAudioRecorder.recording)
+    {
+        [_myAudioRecorder prepareToRecord];
+        [_myAudioRecorder record];
+    }
+}
+
+
+- (void)stopRecording {
+    
+    if (_myAudioRecorder.recording)
+    {
+        [_myAudioRecorder stop];
+        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        [audioSession setActive:NO error:nil];
+        
+        [self loadAudiofiles];
+        [self.tableView reloadData];
+    }
+    
+}
+
+
+- (void)myAudioName{
+    
+    _myFileName = @"";
+    
+    NSDate *myCurrentdate = [NSDate date];
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"yyyyMMdd_HHmmss"];
+    NSString *myDate = [dateFormat stringFromDate: myCurrentdate];
+    
+    _myFileName = [NSString stringWithFormat:@"%@%@%@", @"z_", myDate, @".m4a"];
+    NSLog(@"File name is: %@", _myFileName);
+    
+}
+
+
 
 
 
@@ -108,10 +204,12 @@
             [self.view setHidden:NO];
             [[self navigationController] setNavigationBarHidden:NO animated:YES];
             // Stop recording
+            [self stopRecording];
         } else {
             [self.view setHidden:YES];
             [[self navigationController] setNavigationBarHidden:YES animated:YES];
             // Start recording
+            [self startRecording];
         }
     }
 }
