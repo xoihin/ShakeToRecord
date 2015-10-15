@@ -9,7 +9,7 @@
 #import "ShakeToRecordTableViewController.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import <AVFoundation/AVFoundation.h>
-
+#import "CountdownViewController.h"
 
 
 
@@ -52,11 +52,6 @@
     
     // Load files to array
     [self loadAudiofiles];
-    
-    // Prepare to record
-    [self prepareToRecord];
-    
-    
     
 }
 
@@ -212,6 +207,12 @@
              AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
         } else {
              AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+            
+            CountdownViewController *vc = [[CountdownViewController alloc]init];
+            [self presentViewController:vc animated:YES completion:nil];
+            
+            [self prepareToRecord];
+            
             [self.view setHidden:YES];
             [[self navigationController] setNavigationBarHidden:YES animated:YES];
             [[self navigationController] setToolbarHidden:YES];
