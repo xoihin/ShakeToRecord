@@ -10,13 +10,14 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import <AVFoundation/AVFoundation.h>
 #import "CountdownViewController.h"
-
+#import <MediaPlayer/MediaPlayer.h>
 
 
 @interface ListTableViewController () <AVAudioRecorderDelegate, AVAudioPlayerDelegate>
 {
     NSString *myFileName;
     NSString *myLastFileName;
+    NSString *selectedAudio;
 }
 
 @property (nonatomic, strong) NSMutableArray *mediaArray;
@@ -49,6 +50,10 @@
     
     // Load files to array
     [self loadAudiofiles];
+    
+    _playButtonOutlet.enabled = false;
+    _pauseButtonOutlet.enabled = false;
+    _stopButtonOutlet.enabled = false;
     
 }
 
@@ -100,7 +105,8 @@
 
 
 
-#pragma mark - Audio Hanlding
+#pragma mark - Audio Recording
+
 
 - (void)prepareToRecord {
     
@@ -161,7 +167,7 @@
 }
 
 
-- (void)myAudioName{
+- (void)myAudioName {
     
     myFileName = @"";
     
@@ -172,7 +178,6 @@
     
     myFileName = [NSString stringWithFormat:@"%@%@%@", @"z_", myDate, @".m4a"];
 //    NSLog(@"File name is: %@", myFileName);
-    
 }
 
 
@@ -189,10 +194,8 @@
 }
 
 
-- (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event
-{
-    if(event.type == UIEventSubtypeMotionShake)
-    {
+- (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+    if(event.type == UIEventSubtypeMotionShake) {
 //        NSLog(@"Shake detected...");
         
         if (self.view.hidden == YES) {
@@ -219,8 +222,7 @@
     }
 }
 
-- (BOOL)BecomeFirstResponder
-{
+- (BOOL)BecomeFirstResponder {
     return YES;
 }
 
@@ -241,11 +243,9 @@
     return _mediaArray.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
     
     // Configure the cell...
     NSString *fileNoExtension = [[NSString alloc]init];
@@ -308,6 +308,128 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSLog(@"Audio selected");
+    
+    selectedAudio = nil;
+    
+    if (!_myAudioPlayer.playing) {
+        
+        selectedAudio = [_mediaArray objectAtIndex:indexPath.row];
+        
+        [self playSelectedAudio];
+    }
+}
+
+
+
+#pragma mark - Audio Playback
+
+- (void) playSelectedAudio {
+    
+    _playButtonOutlet.enabled = false;
+    _pauseButtonOutlet.enabled = true;
+    _stopButtonOutlet.enabled = true;
+    
+    // Path for audio file
+    NSString *sourceFile = [_folderPath stringByAppendingString:[NSString stringWithFormat:@"/%@", selectedAudio]];
+    
+    // Use GCD to load audio in the background
+    dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(dispatchQueue, ^(void) {
+        
+        NSData *fileData=[NSData dataWithContentsOfFile:sourceFile];
+        
+        NSError *error = nil;
+        _myAudioPlayer = [[AVAudioPlayer alloc] initWithData:fileData error:&error];
+        
+        /* Did we get an instance of AVAudioPlayer? */
+        if (_myAudioPlayer != nil){
+            /* Set the delegate and start playing */
+            _myAudioPlayer.delegate = self;
+            
+            if ([_myAudioPlayer prepareToPlay] && [_myAudioPlayer play]) {
+                NSLog(@"Playing...");
+                
+                [_myAudioPlayer play];
+                
+            } else{
+                NSLog(@"Failed to play...");
+            }
+        } else {
+            NSLog(@"Failed to instantiate AVAudioPlayer...");
+        }
+    });
+}
+
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
+    
+    NSLog(@"Finished playing the song");
+    
+    if ([player isEqual:_myAudioPlayer]){
+         _myAudioPlayer = nil;
+    }
+    
+    _playButtonOutlet.enabled = false;
+    _pauseButtonOutlet.enabled = false;
+    _stopButtonOutlet.enabled = false;
+}
+
+- (void)audioPlayerBeginInterruption:(AVAudioPlayer *)player{
+    /* Audio Session is interrupted. The player will be paused here */
+}
+
+- (void) audioPlayerEndInterruption:(AVAudioPlayer *)player withOptions:(NSUInteger)flags {
+    
+    if (flags == AVAudioSessionInterruptionOptionShouldResume && player != nil) {
+        [player play];
+    }
+}
+
+
+- (IBAction)myPlayButton:(UIBarButtonItem *)sender {
+    [self playSelectedAudio];
+}
+
+- (IBAction)myPauseButton:(UIBarButtonItem *)sender {
+    [_myAudioPlayer pause];
+    
+    _playButtonOutlet.enabled = true;
+    _pauseButtonOutlet.enabled = false;
+    _stopButtonOutlet.enabled = true;
+}
+
+- (IBAction)myStopButton:(UIBarButtonItem *)sender {
+    [_myAudioPlayer stop];
+    
+    _playButtonOutlet.enabled = true;
+    _pauseButtonOutlet.enabled = false;
+    _stopButtonOutlet.enabled = false;
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

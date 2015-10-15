@@ -10,4 +10,15 @@
 
 @interface ListTableViewController : UITableViewController
 
+
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *playButtonOutlet;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *pauseButtonOutlet;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *stopButtonOutlet;
+
+
+- (IBAction)myPlayButton:(UIBarButtonItem *)sender;
+- (IBAction)myPauseButton:(UIBarButtonItem *)sender;
+- (IBAction)myStopButton:(UIBarButtonItem *)sender;
+
+
 @end
