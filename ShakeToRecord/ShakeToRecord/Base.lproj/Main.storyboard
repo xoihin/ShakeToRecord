@@ -4,10 +4,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
-        <!--Shake To Record Table View Controller-->
+        <!--List Table View Controller-->
         <scene sceneID="7CW-mk-WO8">
             <objects>
-                <tableViewController id="PlR-bX-f8S" customClass="ShakeToRecordTableViewController" sceneMemberID="viewController">
+                <tableViewController id="PlR-bX-f8S" customClass="ListTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="JfK-TT-eb9">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -6,14 +6,14 @@
 //  Copyright (c) 2015 XoiAHin. All rights reserved.
 //
 
-#import "ShakeToRecordTableViewController.h"
+#import "ListTableViewController.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import <AVFoundation/AVFoundation.h>
 #import "CountdownViewController.h"
 
 
 
-@interface ShakeToRecordTableViewController () <AVAudioRecorderDelegate, AVAudioPlayerDelegate>
+@interface ListTableViewController () <AVAudioRecorderDelegate, AVAudioPlayerDelegate>
 {
     NSString *myFileName;
     NSString *myLastFileName;
@@ -27,16 +27,13 @@
 @property (nonatomic, strong) NSArray *paths;
 @property (nonatomic, strong) NSString *folderPath;
 
-//@property (nonatomic, strong) NSString *myFileName;
-//@property (nonatomic, strong) NSString *myLastFileName;
-//
 
 
 @end
 
 
 
-@implementation ShakeToRecordTableViewController
+@implementation ListTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -174,7 +171,7 @@
     NSString *myDate = [dateFormat stringFromDate: myCurrentdate];
     
     myFileName = [NSString stringWithFormat:@"%@%@%@", @"z_", myDate, @".m4a"];
-    NSLog(@"File name is: %@", myFileName);
+//    NSLog(@"File name is: %@", myFileName);
     
 }
 
@@ -196,7 +193,7 @@
 {
     if(event.type == UIEventSubtypeMotionShake)
     {
-        NSLog(@"Shake detected...");
+//        NSLog(@"Shake detected...");
         
         if (self.view.hidden == YES) {
             [self.view setHidden:NO];
@@ -254,7 +251,7 @@
     NSString *fileNoExtension = [[NSString alloc]init];
     fileNoExtension = [_mediaArray objectAtIndex:indexPath.row];
     
-    NSLog(@"%@ %@", fileNoExtension, myLastFileName);
+//    NSLog(@"%@ %@", fileNoExtension, myLastFileName);
     
     if ([fileNoExtension isEqualToString:myLastFileName]) {
         cell.textLabel.textColor = [UIColor orangeColor];

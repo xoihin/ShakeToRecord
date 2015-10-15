@@ -15,7 +15,7 @@
 		F6654BEE1BCDDA870054072A /* ShakeToRecordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F6654BED1BCDDA870054072A /* ShakeToRecordTests.m */; };
 		F686738C1BCF6F7F007A30C0 /* CountdownViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F686738A1BCF6F7F007A30C0 /* CountdownViewController.m */; };
 		F686738D1BCF6F7F007A30C0 /* CountdownViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F686738B1BCF6F7F007A30C0 /* CountdownViewController.xib */; };
-		F69E640B1BCDDB9A006E993F /* ShakeToRecordTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F69E640A1BCDDB9A006E993F /* ShakeToRecordTableViewController.m */; };
+		F69E640B1BCDDB9A006E993F /* ListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F69E640A1BCDDB9A006E993F /* ListTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,8 +43,8 @@
 		F68673891BCF6F7F007A30C0 /* CountdownViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountdownViewController.h; sourceTree = "<group>"; };
 		F686738A1BCF6F7F007A30C0 /* CountdownViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountdownViewController.m; sourceTree = "<group>"; };
 		F686738B1BCF6F7F007A30C0 /* CountdownViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CountdownViewController.xib; sourceTree = "<group>"; };
-		F69E64091BCDDB9A006E993F /* ShakeToRecordTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShakeToRecordTableViewController.h; sourceTree = "<group>"; };
-		F69E640A1BCDDB9A006E993F /* ShakeToRecordTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShakeToRecordTableViewController.m; sourceTree = "<group>"; };
+		F69E64091BCDDB9A006E993F /* ListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListTableViewController.h; sourceTree = "<group>"; };
+		F69E640A1BCDDB9A006E993F /* ListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,8 +89,8 @@
 				F686738E1BCF6F86007A30C0 /* Coundown */,
 				F6654BD51BCDDA870054072A /* AppDelegate.h */,
 				F6654BD61BCDDA870054072A /* AppDelegate.m */,
-				F69E64091BCDDB9A006E993F /* ShakeToRecordTableViewController.h */,
-				F69E640A1BCDDB9A006E993F /* ShakeToRecordTableViewController.m */,
+				F69E64091BCDDB9A006E993F /* ListTableViewController.h */,
+				F69E640A1BCDDB9A006E993F /* ListTableViewController.m */,
 				F6654BDB1BCDDA870054072A /* Main.storyboard */,
 				F6654BDE1BCDDA870054072A /* Images.xcassets */,
 				F6654BE01BCDDA870054072A /* LaunchScreen.xib */,
@@ -239,7 +239,7 @@
 				F686738C1BCF6F7F007A30C0 /* CountdownViewController.m in Sources */,
 				F6654BD71BCDDA870054072A /* AppDelegate.m in Sources */,
 				F6654BD41BCDDA870054072A /* main.m in Sources */,
-				F69E640B1BCDDB9A006E993F /* ShakeToRecordTableViewController.m in Sources */,
+				F69E640B1BCDDB9A006E993F /* ListTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -366,6 +366,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = ShakeToRecord/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -376,6 +377,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = ShakeToRecord/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

@@ -16,21 +16,21 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eao-yp-hgJ">
-                    <rect key="frame" x="277" y="222" width="47" height="102"/>
+                    <rect key="frame" x="271" y="219" width="60" height="109"/>
                     <color key="backgroundColor" red="1" green="0.66003180309999998" blue="0.088277532529999994" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="85"/>
+                    <fontDescription key="fontDescription" name="Superclarendon-Regular" family="Superclarendon" pointSize="90"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recording starts in:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Je1-6k-Kvn">
-                    <rect key="frame" x="36" y="100" width="528" height="32"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Screen will dim..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Je1-6k-Kvn">
+                    <rect key="frame" x="36" y="135" width="528" height="34"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Shake to end..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F62-C1-0LE">
+                    <rect key="frame" x="50" y="378" width="500" height="32"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Screen will dim.  Shake again to finish recording." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F62-C1-0LE">
-                    <rect key="frame" x="50" y="454" width="500" height="26"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="21"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -40,12 +40,20 @@
                 <constraint firstItem="F62-C1-0LE" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="50" id="2E7-8C-K8e"/>
                 <constraint firstAttribute="trailing" secondItem="Je1-6k-Kvn" secondAttribute="trailing" constant="36" id="46E-pQ-fOc"/>
                 <constraint firstAttribute="centerX" secondItem="eao-yp-hgJ" secondAttribute="centerX" constant="-0.5" id="QYq-V6-EHJ"/>
+                <constraint firstItem="eao-yp-hgJ" firstAttribute="top" secondItem="Je1-6k-Kvn" secondAttribute="bottom" constant="50" id="Rn4-v9-Xsf"/>
+                <constraint firstItem="F62-C1-0LE" firstAttribute="top" secondItem="eao-yp-hgJ" secondAttribute="bottom" constant="50" id="Wuc-zC-i3j"/>
                 <constraint firstAttribute="bottom" secondItem="F62-C1-0LE" secondAttribute="bottom" constant="120" id="dlH-xK-2OW"/>
                 <constraint firstAttribute="trailing" secondItem="F62-C1-0LE" secondAttribute="trailing" constant="50" id="mSd-oj-ovv"/>
                 <constraint firstAttribute="centerY" secondItem="eao-yp-hgJ" secondAttribute="centerY" constant="27" id="pqJ-KH-fFE"/>
                 <constraint firstItem="Je1-6k-Kvn" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="36" id="rPI-yy-5IM"/>
                 <constraint firstItem="Je1-6k-Kvn" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="100" id="x06-aA-w80"/>
             </constraints>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="x06-aA-w80"/>
+                    <exclude reference="dlH-xK-2OW"/>
+                </mask>
+            </variation>
         </view>
     </objects>
 </document>
