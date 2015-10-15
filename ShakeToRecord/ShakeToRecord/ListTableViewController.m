@@ -42,7 +42,7 @@
     self.title = NSLocalizedString(@"Library", @"Library");
     
     // Enable Edit/Done button
-    self.navigationItem.leftBarButtonItem = self.editButtonItem;
+//    self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
     // full path to Documents directory
     _paths =NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -200,10 +200,7 @@
         
         // Stop playback if needed.
         if (_myAudioPlayer.playing) {
-            [_myAudioPlayer stop];
-            _playButtonOutlet.enabled = false;
-            _pauseButtonOutlet.enabled = false;
-            _stopButtonOutlet.enabled = false;
+            [self myStopButton:nil];
         }
         
         if (self.view.hidden == YES) {
@@ -332,16 +329,50 @@
 }
 
 
+-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+//    NSLog(@"did de-select row...");
+    
+    if (_myAudioPlayer.playing) {
+        [self myStopButton:nil];
+    }
+}
+
+
 
 #pragma mark - Audio Playback
 
-- (void) playSelectedAudio {
+
+- (void)playbackSetUp {
     
-    }
+    // Path for audio file
+    NSString *sourceFile = [_folderPath stringByAppendingString:[NSString stringWithFormat:@"/%@", selectedAudio]];
+    
+    // Use GCD to load audio in the background
+    dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(dispatchQueue, ^(void) {
+        
+        NSData *fileData=[NSData dataWithContentsOfFile:sourceFile];
+        
+        NSError *error = nil;
+        _myAudioPlayer = [[AVAudioPlayer alloc] initWithData:fileData error:&error];
+        
+        if (_myAudioPlayer != nil){
+            /* Set the delegate and start playing */
+            _myAudioPlayer.delegate = self;
+            
+            if ([_myAudioPlayer prepareToPlay] && [_myAudioPlayer play]) {
+//                [_myAudioPlayer play];
+            } else{
+                NSLog(@"Failed to play...");
+            }
+        } else {
+            NSLog(@"Failed to instantiate AVAudioPlayer...");
+        }
+    });
+}
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
-    
-    NSLog(@"Finished playing the song");
+//    NSLog(@"Finished playing the song");
     
     if ([player isEqual:_myAudioPlayer]){
          _myAudioPlayer = nil;
@@ -367,36 +398,15 @@
 
 - (IBAction)myPlayButton:(UIBarButtonItem *)sender {
     
+    if (!_myAudioPlayer) {
+        [self playbackSetUp];
+    }
+    
     _playButtonOutlet.enabled = false;
     _pauseButtonOutlet.enabled = true;
     _stopButtonOutlet.enabled = true;
     
-    // Path for audio file
-    NSString *sourceFile = [_folderPath stringByAppendingString:[NSString stringWithFormat:@"/%@", selectedAudio]];
-    
-    // Use GCD to load audio in the background
-    dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(dispatchQueue, ^(void) {
-        
-        NSData *fileData=[NSData dataWithContentsOfFile:sourceFile];
-        
-        NSError *error = nil;
-        _myAudioPlayer = [[AVAudioPlayer alloc] initWithData:fileData error:&error];
-        
-        if (_myAudioPlayer != nil){
-            /* Set the delegate and start playing */
-            _myAudioPlayer.delegate = self;
-            
-            if ([_myAudioPlayer prepareToPlay] && [_myAudioPlayer play]) {
-                [_myAudioPlayer play];
-            } else{
-                NSLog(@"Failed to play...");
-            }
-        } else {
-            NSLog(@"Failed to instantiate AVAudioPlayer...");
-        }
-    });
-    
+    [_myAudioPlayer play];
 }
 
 - (IBAction)myPauseButton:(UIBarButtonItem *)sender {
@@ -409,8 +419,9 @@
 
 - (IBAction)myStopButton:(UIBarButtonItem *)sender {
     [_myAudioPlayer stop];
+    _myAudioPlayer = nil;
     
-    _playButtonOutlet.enabled = true;
+    _playButtonOutlet.enabled = false;
     _pauseButtonOutlet.enabled = false;
     _stopButtonOutlet.enabled = false;
     
