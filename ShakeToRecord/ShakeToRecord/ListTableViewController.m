@@ -198,6 +198,14 @@
     if(event.type == UIEventSubtypeMotionShake) {
 //        NSLog(@"Shake detected...");
         
+        // Stop playback if needed.
+        if (_myAudioPlayer.playing) {
+            [_myAudioPlayer stop];
+            _playButtonOutlet.enabled = false;
+            _pauseButtonOutlet.enabled = false;
+            _stopButtonOutlet.enabled = false;
+        }
+        
         if (self.view.hidden == YES) {
             [self.view setHidden:NO];
             [[self navigationController] setNavigationBarHidden:NO animated:YES];
@@ -311,7 +319,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    NSLog(@"Audio selected");
+//    NSLog(@"Audio selected");
     
     selectedAudio = nil;
     
@@ -319,7 +327,7 @@
         
         selectedAudio = [_mediaArray objectAtIndex:indexPath.row];
         
-        [self playSelectedAudio];
+        [self myPlayButton:nil];
     }
 }
 
@@ -329,40 +337,7 @@
 
 - (void) playSelectedAudio {
     
-    _playButtonOutlet.enabled = false;
-    _pauseButtonOutlet.enabled = true;
-    _stopButtonOutlet.enabled = true;
-    
-    // Path for audio file
-    NSString *sourceFile = [_folderPath stringByAppendingString:[NSString stringWithFormat:@"/%@", selectedAudio]];
-    
-    // Use GCD to load audio in the background
-    dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(dispatchQueue, ^(void) {
-        
-        NSData *fileData=[NSData dataWithContentsOfFile:sourceFile];
-        
-        NSError *error = nil;
-        _myAudioPlayer = [[AVAudioPlayer alloc] initWithData:fileData error:&error];
-        
-        /* Did we get an instance of AVAudioPlayer? */
-        if (_myAudioPlayer != nil){
-            /* Set the delegate and start playing */
-            _myAudioPlayer.delegate = self;
-            
-            if ([_myAudioPlayer prepareToPlay] && [_myAudioPlayer play]) {
-                NSLog(@"Playing...");
-                
-                [_myAudioPlayer play];
-                
-            } else{
-                NSLog(@"Failed to play...");
-            }
-        } else {
-            NSLog(@"Failed to instantiate AVAudioPlayer...");
-        }
-    });
-}
+    }
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
     
@@ -389,8 +364,39 @@
 }
 
 
+
 - (IBAction)myPlayButton:(UIBarButtonItem *)sender {
-    [self playSelectedAudio];
+    
+    _playButtonOutlet.enabled = false;
+    _pauseButtonOutlet.enabled = true;
+    _stopButtonOutlet.enabled = true;
+    
+    // Path for audio file
+    NSString *sourceFile = [_folderPath stringByAppendingString:[NSString stringWithFormat:@"/%@", selectedAudio]];
+    
+    // Use GCD to load audio in the background
+    dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(dispatchQueue, ^(void) {
+        
+        NSData *fileData=[NSData dataWithContentsOfFile:sourceFile];
+        
+        NSError *error = nil;
+        _myAudioPlayer = [[AVAudioPlayer alloc] initWithData:fileData error:&error];
+        
+        if (_myAudioPlayer != nil){
+            /* Set the delegate and start playing */
+            _myAudioPlayer.delegate = self;
+            
+            if ([_myAudioPlayer prepareToPlay] && [_myAudioPlayer play]) {
+                [_myAudioPlayer play];
+            } else{
+                NSLog(@"Failed to play...");
+            }
+        } else {
+            NSLog(@"Failed to instantiate AVAudioPlayer...");
+        }
+    });
+    
 }
 
 - (IBAction)myPauseButton:(UIBarButtonItem *)sender {
