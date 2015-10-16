@@ -284,12 +284,14 @@
 
 -(NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    // Obtain audio name
+    selectedAudio = [[NSString alloc]init];
+    selectedAudio = [_mediaArray objectAtIndex:indexPath.row];
+
     // Delete action
     UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"Delete" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
         
-        NSString * objectToDelete = [[NSString alloc]init];
-        objectToDelete = [_mediaArray objectAtIndex:[indexPath row]];
-        NSString *fullFileName = [NSString stringWithFormat:@"%@/%@", _folderPath, objectToDelete];
+        NSString *fullFileName = [NSString stringWithFormat:@"%@/%@", _folderPath, selectedAudio];
         [[NSFileManager defaultManager] removeItemAtPath:fullFileName error: NULL];
         
         // Remove from table view
@@ -298,13 +300,9 @@
     }];
     deleteAction.backgroundColor = [UIColor redColor];
     
+    
     // More actions
     UITableViewRowAction *moreAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"More" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
-
-        // Obtain audio name
-        selectedAudio = nil;
-        selectedAudio = [_mediaArray objectAtIndex:indexPath.row];
-        
         // show UIActionSheet
         [self performAlertController];
     }];
