@@ -13,14 +13,17 @@
 #import <MediaPlayer/MediaPlayer.h>
 
 
-@interface ListTableViewController () <AVAudioRecorderDelegate, AVAudioPlayerDelegate>
+@interface ListTableViewController () <AVAudioRecorderDelegate, AVAudioPlayerDelegate, UISearchResultsUpdating, UISearchBarDelegate>
 {
     NSString *myFileName;
     NSString *myLastFileName;
     NSString *selectedAudio;
+    BOOL shouldShowSearchResults;
+    
 }
 
 @property (nonatomic, strong) NSMutableArray *mediaArray;
+@property (nonatomic, strong) NSMutableArray *filterArray;
 
 @property (nonatomic, strong) AVAudioRecorder *myAudioRecorder;
 @property (nonatomic, strong) AVAudioPlayer *myAudioPlayer;
@@ -29,6 +32,9 @@
 @property (nonatomic, strong) NSString *folderPath;
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+
+@property (nonatomic, strong) UISearchController *searchController;
+
 
 @end
 
@@ -40,6 +46,8 @@
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Library", @"Library");
+    
+    shouldShowSearchResults = false;
     
     // Enable Edit/Done button
 //    self.navigationItem.leftBarButtonItem = self.editButtonItem;
@@ -58,6 +66,7 @@
     self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.activityIndicator];
     
+    [self configureSearchController];
 
 }
 
@@ -105,7 +114,56 @@
     // Sort
 //    _mediaArray =[[_mediaArray sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] mutableCopy];
     _mediaArray  = [[[[_mediaArray sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] reverseObjectEnumerator] allObjects] mutableCopy];
+    
+    [self.tableView reloadData];
 }
+
+
+
+#pragma mark - Search Audio
+
+- (void)configureSearchController {
+    _searchController = [[UISearchController alloc]initWithSearchResultsController:nil];
+    _searchController.searchResultsUpdater = self;
+    _searchController.dimsBackgroundDuringPresentation = false;
+    _searchController.searchBar.placeholder = @"Search here...";
+    _searchController.searchBar.delegate = self;
+    [_searchController.searchBar sizeToFit];
+    
+    self.tableView.tableHeaderView = _searchController.searchBar;
+}
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    shouldShowSearchResults = true;
+    [self.tableView reloadData];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    shouldShowSearchResults = false;
+    [self.tableView reloadData];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    if (!shouldShowSearchResults) {
+        shouldShowSearchResults = true;
+        [self.tableView reloadData];
+    }
+    [_searchController.searchBar resignFirstResponder];
+}
+
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+    
+    NSString *searchText = [[NSString alloc]initWithString:_searchController.searchBar.text];
+    
+    NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] %@", searchText];
+    
+    _filterArray = [[_mediaArray filteredArrayUsingPredicate:resultPredicate]mutableCopy];
+    
+    [self.tableView reloadData];
+}
+
+
 
 
 
@@ -165,9 +223,7 @@
         [audioSession setActive:NO error:nil];
         
         [self loadAudiofiles];
-        [self.tableView reloadData];
     }
-    
 }
 
 
@@ -247,7 +303,11 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return _mediaArray.count;
+    if (shouldShowSearchResults) {
+        return _filterArray.count;
+    } else {
+        return _mediaArray.count;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -256,9 +316,12 @@
     
     // Configure the cell...
     NSString *fileNoExtension = [[NSString alloc]init];
-    fileNoExtension = [_mediaArray objectAtIndex:indexPath.row];
     
-//    NSLog(@"%@ %@", fileNoExtension, myLastFileName);
+    if (shouldShowSearchResults) {
+        fileNoExtension = [_filterArray objectAtIndex:indexPath.row];
+    } else {
+        fileNoExtension = [_mediaArray objectAtIndex:indexPath.row];
+    }
     
     if ([fileNoExtension isEqualToString:myLastFileName]) {
         cell.textLabel.textColor = [UIColor orangeColor];
@@ -451,7 +514,7 @@
             NSLog(@"File %@ doesn't exists", selectedAudio);
         }
         [self loadAudiofiles];
-        [self.tableView reloadData];
+    
     }
 }
 
