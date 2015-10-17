@@ -28,7 +28,7 @@
 @property (nonatomic, strong) NSArray *paths;
 @property (nonatomic, strong) NSString *folderPath;
 
-
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -55,6 +55,10 @@
     _pauseButtonOutlet.enabled = false;
     _stopButtonOutlet.enabled = false;
     
+    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.activityIndicator];
+    
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -342,6 +346,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     selectedAudio = nil;
     
+    [self.activityIndicator startAnimating];
+    
     if (!_myAudioPlayer.playing) {
         selectedAudio = [_mediaArray objectAtIndex:indexPath.row];
         [self myPlayButton:nil];
@@ -442,6 +448,7 @@
             
             if ([_myAudioPlayer prepareToPlay] && [_myAudioPlayer play]) {
 //                [_myAudioPlayer play];
+                [self.activityIndicator stopAnimating];
             } else{
                 NSLog(@"Failed to play...");
             }
