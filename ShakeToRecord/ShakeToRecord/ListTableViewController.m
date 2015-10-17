@@ -367,16 +367,47 @@
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Actions" message:@"Perform on row" preferredStyle:UIAlertControllerStyleActionSheet];
     
-    UIAlertAction* rename = [UIAlertAction actionWithTitle:@"Rename" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+    UIAlertAction *rename = [UIAlertAction actionWithTitle:@"Rename" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         [self renameAudioFile];
     }];
     [alertController addAction:rename];
+    
+    UIAlertAction *share = [UIAlertAction actionWithTitle:@"Share" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        [self shareAudioFile];
+    }];
+    [alertController addAction:share];
     
     UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     [alertController addAction:cancel];
     
     [self presentViewController:alertController animated:YES completion:nil];
 }
+
+
+- (void)shareAudioFile {
+    
+    NSArray *pathComponents = [NSArray arrayWithObjects:
+                               [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject],
+                               selectedAudio, nil];
+    NSURL *audioFileURL = [NSURL fileURLWithPathComponents:pathComponents];
+    NSArray *objectsToShare = @[audioFileURL];
+    
+    UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:objectsToShare applicationActivities:nil];
+    
+    // Exclude all activities except AirDrop.
+    NSArray *excludedActivities = @[UIActivityTypePostToTwitter, UIActivityTypePostToFacebook,
+                                    UIActivityTypePostToWeibo,
+                                    UIActivityTypeMessage, UIActivityTypeMail,
+                                    UIActivityTypePrint, UIActivityTypeCopyToPasteboard,
+                                    UIActivityTypeAssignToContact, UIActivityTypeSaveToCameraRoll,
+                                    UIActivityTypeAddToReadingList, UIActivityTypePostToFlickr,
+                                    UIActivityTypePostToVimeo, UIActivityTypePostToTencentWeibo];
+    controller.excludedActivityTypes = excludedActivities;
+    
+    // Present the controller
+    [self presentViewController:controller animated:YES completion:nil];
+}
+
 
 - (void)renameAudioFile {
     
@@ -390,6 +421,7 @@
     
     [alertView show];
 }
+
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
