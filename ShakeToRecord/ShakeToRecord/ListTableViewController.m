@@ -35,12 +35,12 @@
 
 @property (nonatomic, strong) UISearchController *searchController;
 
-
 @end
 
 
 
 @implementation ListTableViewController
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -48,20 +48,15 @@
     self.title = NSLocalizedString(@"Library", @"Library");
     
     shouldShowSearchResults = false;
-    
-    // Enable Edit/Done button
-//    self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
     // full path to Documents directory
-    _paths =NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    _folderPath = [_paths objectAtIndex:0];
+    self.paths =NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    self.folderPath = [self.paths objectAtIndex:0];
     
     // Load files to array
     [self loadAudiofiles];
     
-    _playButtonOutlet.enabled = false;
-    _pauseButtonOutlet.enabled = false;
-    _stopButtonOutlet.enabled = false;
+    [self disableAllPlaybackButtons];
     
     self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.activityIndicator];
@@ -69,6 +64,7 @@
     [self configureSearchController];
 
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -80,10 +76,10 @@
 - (void)loadAudiofiles {
     
     // Init
-    _mediaArray = [[NSMutableArray alloc]init];
+    self.mediaArray = [[NSMutableArray alloc]init];
     
     NSError *errVal;
-    NSArray *directoryList = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:_folderPath error:&errVal];
+    NSArray *directoryList = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:self.folderPath error:&errVal];
     
     
     for (int iX = 0; iX < [directoryList count]; iX++)
@@ -107,13 +103,13 @@
             ([fileExtension isEqualToString:@"m4a"]) ||
             ([fileExtension isEqualToString:@"M4A"]))
         {
-            [_mediaArray addObject:fileName];
+            [self.mediaArray addObject:fileName];
         }
     }
     
     // Sort
 //    _mediaArray =[[_mediaArray sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] mutableCopy];
-    _mediaArray  = [[[[_mediaArray sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] reverseObjectEnumerator] allObjects] mutableCopy];
+    self.mediaArray  = [[[[self.mediaArray sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] reverseObjectEnumerator] allObjects] mutableCopy];
     
     [self.tableView reloadData];
 }
@@ -123,14 +119,15 @@
 #pragma mark - Search Audio
 
 - (void)configureSearchController {
-    _searchController = [[UISearchController alloc]initWithSearchResultsController:nil];
-    _searchController.searchResultsUpdater = self;
-    _searchController.dimsBackgroundDuringPresentation = false;
-    _searchController.searchBar.placeholder = @"Search here...";
-    _searchController.searchBar.delegate = self;
-    [_searchController.searchBar sizeToFit];
     
-    self.tableView.tableHeaderView = _searchController.searchBar;
+    self.searchController = [[UISearchController alloc]initWithSearchResultsController:nil];
+    self.searchController.searchResultsUpdater = self;
+    self.searchController.dimsBackgroundDuringPresentation = false;
+//    self.searchController.searchBar.placeholder = @"Search here...";
+    self.searchController.searchBar.delegate = self;
+    [self.searchController.searchBar sizeToFit];
+    
+    self.tableView.tableHeaderView = self.searchController.searchBar;
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
@@ -148,17 +145,17 @@
         shouldShowSearchResults = true;
         [self.tableView reloadData];
     }
-    [_searchController.searchBar resignFirstResponder];
+    [self.searchController.searchBar resignFirstResponder];
 }
 
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
     
-    NSString *searchText = [[NSString alloc]initWithString:_searchController.searchBar.text];
+    NSString *searchText = [[NSString alloc]initWithString:self.searchController.searchBar.text];
     
     NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] %@", searchText];
     
-    _filterArray = [[_mediaArray filteredArrayUsingPredicate:resultPredicate]mutableCopy];
+    self.filterArray = [[self.mediaArray filteredArrayUsingPredicate:resultPredicate]mutableCopy];
     
     [self.tableView reloadData];
 }
@@ -194,8 +191,8 @@
     [recordSetting setValue:[NSNumber numberWithFloat:44100.0] forKey:AVSampleRateKey];
     [recordSetting setValue:[NSNumber numberWithInt: 2] forKey:AVNumberOfChannelsKey];
     
-    _myAudioRecorder = [[AVAudioRecorder alloc] initWithURL:outputFileURL settings:recordSetting error:&error];
-    _myAudioRecorder.delegate = self;
+    self.myAudioRecorder = [[AVAudioRecorder alloc] initWithURL:outputFileURL settings:recordSetting error:&error];
+    self.myAudioRecorder.delegate = self;
     
     if (error)
     {
@@ -206,19 +203,19 @@
 
 
 - (void)startRecording {
-    if (!_myAudioRecorder.recording)
+    if (!self.myAudioRecorder.recording)
     {
-        [_myAudioRecorder prepareToRecord];
-        [_myAudioRecorder record];
+        [self.myAudioRecorder prepareToRecord];
+        [self.myAudioRecorder record];
     }
 }
 
 
 - (void)stopRecording {
     
-    if (_myAudioRecorder.recording)
+    if (self.myAudioRecorder.recording)
     {
-        [_myAudioRecorder stop];
+        [self.myAudioRecorder stop];
         AVAudioSession *audioSession = [AVAudioSession sharedInstance];
         [audioSession setActive:NO error:nil];
         
@@ -257,7 +254,7 @@
 - (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event {
     if(event.type == UIEventSubtypeMotionShake) {
         // Stop playback if needed.
-        if (_myAudioPlayer.playing) {
+        if (self.myAudioPlayer.playing) {
             [self myStopButton:nil];
         }
         
@@ -304,9 +301,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
     if (shouldShowSearchResults) {
-        return _filterArray.count;
+        return self.filterArray.count;
     } else {
-        return _mediaArray.count;
+        return self.mediaArray.count;
     }
 }
 
@@ -318,9 +315,9 @@
     NSString *fileNoExtension = [[NSString alloc]init];
     
     if (shouldShowSearchResults) {
-        fileNoExtension = [_filterArray objectAtIndex:indexPath.row];
+        fileNoExtension = [self.filterArray objectAtIndex:indexPath.row];
     } else {
-        fileNoExtension = [_mediaArray objectAtIndex:indexPath.row];
+        fileNoExtension = [self.mediaArray objectAtIndex:indexPath.row];
     }
     
     if ([fileNoExtension isEqualToString:myLastFileName]) {
@@ -353,17 +350,28 @@
     
     // Obtain audio name
     selectedAudio = [[NSString alloc]init];
-    selectedAudio = [_mediaArray objectAtIndex:indexPath.row];
+    
+    if (shouldShowSearchResults) {
+        selectedAudio = [self.filterArray objectAtIndex:indexPath.row];
+    } else {
+        selectedAudio = [self.mediaArray objectAtIndex:indexPath.row];
+    }
 
+    
     // Delete action
     UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"Delete" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
         
-        NSString *fullFileName = [NSString stringWithFormat:@"%@/%@", _folderPath, selectedAudio];
+        NSString *fullFileName = [NSString stringWithFormat:@"%@/%@", self.folderPath, selectedAudio];
         [[NSFileManager defaultManager] removeItemAtPath:fullFileName error: NULL];
         
         // Remove from table view
-        [_mediaArray removeObjectAtIndex:indexPath.row];
+        if (shouldShowSearchResults) {
+            [self.filterArray removeObjectAtIndex:indexPath.row];
+        } else {
+            [self.mediaArray removeObjectAtIndex:indexPath.row];
+        }
         [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [self loadAudiofiles];
     }];
     deleteAction.backgroundColor = [UIColor redColor];
     
@@ -407,18 +415,27 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    selectedAudio = nil;
     
     [self.activityIndicator startAnimating];
     
-    if (!_myAudioPlayer.playing) {
-        selectedAudio = [_mediaArray objectAtIndex:indexPath.row];
+    selectedAudio = nil;
+    
+    if (!self.myAudioPlayer.playing) {
+        
+        if (shouldShowSearchResults) {
+//            selectedAudio = [self.filterArray objectAtIndex:[[self.tableView indexPathForSelectedRow] row]];
+            selectedAudio = [self.filterArray objectAtIndex:indexPath.row];
+        } else {
+//            selectedAudio = [self.mediaArray objectAtIndex:[[self.tableView indexPathForSelectedRow] row]];
+            selectedAudio = [self.mediaArray objectAtIndex:indexPath.row];
+        }
+
         [self myPlayButton:nil];
     }
 }
 
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (_myAudioPlayer.playing) {
+    if (self.myAudioPlayer.playing) {
         [self myStopButton:nil];
     }
 }
@@ -449,8 +466,7 @@
 
 - (void)shareAudioFile {
     
-    NSArray *pathComponents = [NSArray arrayWithObjects:
-                               [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject],
+    NSArray *pathComponents = [NSArray arrayWithObjects: [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject],
                                selectedAudio, nil];
     NSURL *audioFileURL = [NSURL fileURLWithPathComponents:pathComponents];
     NSArray *objectsToShare = @[audioFileURL];
@@ -499,8 +515,8 @@
         NSString *myFinalName = [[NSString alloc]init];
         myFinalName = [NSString stringWithFormat:@"%@%@%@", myNewFileName.text, @".", myExt];
         
-        NSString *filePathSrc = [_folderPath stringByAppendingPathComponent:selectedAudio];
-        NSString *filePathDst = [_folderPath stringByAppendingPathComponent:myFinalName];
+        NSString *filePathSrc = [self.folderPath stringByAppendingPathComponent:selectedAudio];
+        NSString *filePathDst = [self.folderPath stringByAppendingPathComponent:myFinalName];
         NSFileManager *manager = [NSFileManager defaultManager];
         if ([manager fileExistsAtPath:filePathSrc]) {
             
@@ -522,11 +538,20 @@
 
 #pragma mark - Audio Playback
 
+ 
 
+- (void)disableAllPlaybackButtons {
+    self.playButtonOutlet.enabled = false;
+    self.pauseButtonOutlet.enabled = false;
+    self.stopButtonOutlet.enabled = false;
+}
+
+                                 
+                                 
 - (void)playbackSetUp {
     
     // Path for audio file
-    NSString *sourceFile = [_folderPath stringByAppendingString:[NSString stringWithFormat:@"/%@", selectedAudio]];
+    NSString *sourceFile = [self.folderPath stringByAppendingString:[NSString stringWithFormat:@"/%@", selectedAudio]];
     
     // Use GCD to load audio in the background
     dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -535,14 +560,14 @@
         NSData *fileData=[NSData dataWithContentsOfFile:sourceFile];
         
         NSError *error = nil;
-        _myAudioPlayer = [[AVAudioPlayer alloc] initWithData:fileData error:&error];
+        self.myAudioPlayer = [[AVAudioPlayer alloc] initWithData:fileData error:&error];
         
-        if (_myAudioPlayer != nil){
+        if (self.myAudioPlayer != nil){
             /* Set the delegate and start playing */
-            _myAudioPlayer.delegate = self;
+            self.myAudioPlayer.delegate = self;
             
-            if ([_myAudioPlayer prepareToPlay] && [_myAudioPlayer play]) {
-//                [_myAudioPlayer play];
+            if ([self.myAudioPlayer prepareToPlay] && [self.myAudioPlayer play]) {
+
                 [self.activityIndicator stopAnimating];
             } else{
                 NSLog(@"Failed to play...");
@@ -556,13 +581,11 @@
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
 //    NSLog(@"Finished playing the song");
     
-    if ([player isEqual:_myAudioPlayer]){
-         _myAudioPlayer = nil;
+    if ([player isEqual:self.myAudioPlayer]){
+         self.myAudioPlayer = nil;
     }
     
-    _playButtonOutlet.enabled = false;
-    _pauseButtonOutlet.enabled = false;
-    _stopButtonOutlet.enabled = false;
+    [self disableAllPlaybackButtons];
 }
 
 - (void)audioPlayerBeginInterruption:(AVAudioPlayer *)player{
@@ -580,33 +603,30 @@
 
 - (IBAction)myPlayButton:(UIBarButtonItem *)sender {
     
-    if (!_myAudioPlayer) {
+    if (!self.myAudioPlayer) {
         [self playbackSetUp];
     }
     
-    _playButtonOutlet.enabled = false;
-    _pauseButtonOutlet.enabled = true;
-    _stopButtonOutlet.enabled = true;
+    self.playButtonOutlet.enabled = false;
+    self.pauseButtonOutlet.enabled = true;
+    self.stopButtonOutlet.enabled = true;
     
-    [_myAudioPlayer play];
+    [self.myAudioPlayer play];
 }
 
 - (IBAction)myPauseButton:(UIBarButtonItem *)sender {
-    [_myAudioPlayer pause];
+    [self.myAudioPlayer pause];
     
-    _playButtonOutlet.enabled = true;
-    _pauseButtonOutlet.enabled = false;
-    _stopButtonOutlet.enabled = true;
+    self.playButtonOutlet.enabled = true;
+    self.pauseButtonOutlet.enabled = false;
+    self.stopButtonOutlet.enabled = true;
 }
 
 - (IBAction)myStopButton:(UIBarButtonItem *)sender {
-    [_myAudioPlayer stop];
-    _myAudioPlayer = nil;
+    [self.myAudioPlayer stop];
+    self.myAudioPlayer = nil;
     
-    _playButtonOutlet.enabled = false;
-    _pauseButtonOutlet.enabled = false;
-    _stopButtonOutlet.enabled = false;
-    
+    [self disableAllPlaybackButtons];
 }
 
 
