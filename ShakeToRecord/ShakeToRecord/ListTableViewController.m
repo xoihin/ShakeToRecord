@@ -367,10 +367,12 @@
         // Remove from table view
         if (shouldShowSearchResults) {
             [self.filterArray removeObjectAtIndex:indexPath.row];
+            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
         } else {
             [self.mediaArray removeObjectAtIndex:indexPath.row];
+            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
-        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        
         [self loadAudiofiles];
     }];
     deleteAction.backgroundColor = [UIColor redColor];
@@ -423,10 +425,8 @@
     if (!self.myAudioPlayer.playing) {
         
         if (shouldShowSearchResults) {
-//            selectedAudio = [self.filterArray objectAtIndex:[[self.tableView indexPathForSelectedRow] row]];
             selectedAudio = [self.filterArray objectAtIndex:indexPath.row];
         } else {
-//            selectedAudio = [self.mediaArray objectAtIndex:[[self.tableView indexPathForSelectedRow] row]];
             selectedAudio = [self.mediaArray objectAtIndex:indexPath.row];
         }
 
@@ -441,11 +441,12 @@
 }
 
 
+
 #pragma mark - Action Sheet
 
 - (void)performAlertController {
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Actions" message:@"Perform on row" preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Actions" message:@"On selected row" preferredStyle:UIAlertControllerStyleActionSheet];
     
     UIAlertAction *rename = [UIAlertAction actionWithTitle:@"Rename" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         [self renameAudioFile];
@@ -461,6 +462,7 @@
     [alertController addAction:cancel];
     
     [self presentViewController:alertController animated:YES completion:nil];
+    
 }
 
 
