@@ -62,6 +62,9 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.activityIndicator];
     
     [self configureSearchController];
+    
+    // The reason turning this on is because at the present time, there is an issue presenting UIAlertController while in UISearchController mode...
+    self.definesPresentationContext = true;
 
 }
 
@@ -453,13 +456,14 @@
     }];
     [alertController addAction:rename];
     
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    [alertController addAction:cancel];
+    
     UIAlertAction *share = [UIAlertAction actionWithTitle:@"Share" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         [self shareAudioFile];
     }];
     [alertController addAction:share];
     
-    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
-    [alertController addAction:cancel];
     
     [self presentViewController:alertController animated:YES completion:nil];
     
@@ -493,7 +497,7 @@
 - (void)renameAudioFile {
     
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"File Name"
-                                                        message:@"Enter the file name:"
+                                                        message:@"Enter new file name:"
                                                        delegate:self
                                               cancelButtonTitle:@"Cancel"
                                               otherButtonTitles:@"Ok", nil];
