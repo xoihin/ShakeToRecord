@@ -66,6 +66,8 @@
     // The reason turning this on is because at the present time, there is an issue presenting UIAlertController while in UISearchController mode...
     self.definesPresentationContext = true;
 
+    self.tableView.estimatedRowHeight = 80;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
 }
 
 
@@ -250,6 +252,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    [self.tableView reloadData];
     [self becomeFirstResponder];
 }
 
@@ -415,9 +418,9 @@
 }
 */
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 60;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    return 60;
+//}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
