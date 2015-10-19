@@ -253,8 +253,29 @@
     [super viewDidAppear:animated];
     
     [self.tableView reloadData];
+    [self animateTable];
     [self becomeFirstResponder];
 }
+
+
+- (void)animateTable {
+    
+    NSArray *cells = [self.tableView visibleCells];
+    CGFloat tableHeight = self.tableView.bounds.size.height;
+    
+    for (int i = 0; i < [cells count]; i++) {
+        UITableViewCell *cell = [cells objectAtIndex:i];
+        cell.transform = CGAffineTransformMakeTranslation(0, tableHeight);
+    }
+    
+    for (int a = 0; a < [cells count]; a++) {
+        UITableViewCell *cell = [cells objectAtIndex:a];
+        [UIView animateWithDuration:1.5 delay:0.05*a usingSpringWithDamping:0.8 initialSpringVelocity:0 options:0 animations:^{
+            cell.transform = CGAffineTransformMakeTranslation(0, 0);
+        } completion:NULL];
+    }
+}
+
 
 
 - (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event {
