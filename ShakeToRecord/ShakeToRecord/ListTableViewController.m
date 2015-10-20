@@ -129,6 +129,7 @@
     self.searchController.searchResultsUpdater = self;
     self.searchController.dimsBackgroundDuringPresentation = false;
 //    self.searchController.searchBar.placeholder = @"Search here...";
+    [self.searchController.searchBar setBarTintColor:[UIColor orangeColor]];
     self.searchController.searchBar.delegate = self;
     [self.searchController.searchBar sizeToFit];
     
