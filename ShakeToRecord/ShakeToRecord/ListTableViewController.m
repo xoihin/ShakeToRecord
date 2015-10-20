@@ -574,7 +574,7 @@
             
             if ([self.myAudioPlayer prepareToPlay] && [self.myAudioPlayer play]) {
 
-                [self.activityIndicator stopAnimating];
+//                [self.activityIndicator stopAnimating];
             } else{
                 NSLog(@"Failed to play...");
             }
@@ -588,6 +588,10 @@
 //    NSLog(@"Finished playing the song");
     if ([player isEqual:self.myAudioPlayer]){
          self.myAudioPlayer = nil;
+    }
+    
+    if (self.activityIndicator.isAnimating) {
+        [self.activityIndicator stopAnimating];
     }
     
     [self disableAllPlaybackButtons];
@@ -612,6 +616,8 @@
         [self playbackSetUp];
     }
     
+    [self.activityIndicator startAnimating];
+    
     self.playButtonOutlet.enabled = false;
     self.pauseButtonOutlet.enabled = true;
     self.stopButtonOutlet.enabled = true;
@@ -622,6 +628,10 @@
 - (IBAction)myPauseButton:(UIBarButtonItem *)sender {
     [self.myAudioPlayer pause];
     
+    if (self.activityIndicator.isAnimating) {
+        [self.activityIndicator stopAnimating];
+    }
+    
     self.playButtonOutlet.enabled = true;
     self.pauseButtonOutlet.enabled = false;
     self.stopButtonOutlet.enabled = true;
@@ -630,6 +640,10 @@
 - (IBAction)myStopButton:(UIBarButtonItem *)sender {
     [self.myAudioPlayer stop];
     self.myAudioPlayer = nil;
+    
+    if (self.activityIndicator.isAnimating) {
+        [self.activityIndicator stopAnimating];
+    }
     
     [self disableAllPlaybackButtons];
 }
