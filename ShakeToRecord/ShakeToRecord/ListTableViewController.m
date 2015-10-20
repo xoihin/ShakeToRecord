@@ -202,7 +202,7 @@
     
     if (error)
     {
-        NSLog(@"error: %@", [error localizedDescription]);
+//        NSLog(@"error: %@", [error localizedDescription]);
     }
     
 }
@@ -340,7 +340,7 @@
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
-    NSString *fileNoExtension = [[NSString alloc]init];
+    NSString *fileNoExtension = nil;
     
     if (shouldShowSearchResults) {
         fileNoExtension = [self.filterArray objectAtIndex:indexPath.row];
@@ -515,10 +515,10 @@
         UITextField *myNewFileName = [alertView textFieldAtIndex:0];
         
         // Rename
-        NSString *myExt = [[NSString alloc]init];
+        NSString *myExt = nil;
         myExt = [selectedAudio pathExtension];
         
-        NSString *myFinalName = [[NSString alloc]init];
+        NSString *myFinalName = nil;
         myFinalName = [NSString stringWithFormat:@"%@%@%@", myNewFileName.text, @".", myExt];
         
         NSString *filePathSrc = [self.folderPath stringByAppendingPathComponent:selectedAudio];
@@ -530,10 +530,10 @@
             [manager moveItemAtPath:filePathSrc toPath:filePathDst error:&error];
             
             if (error) {
-                NSLog(@"There is an Error: %@", error);
+//                NSLog(@"There is an Error: %@", error);
             }
         } else {
-            NSLog(@"File %@ doesn't exists", selectedAudio);
+//            NSLog(@"File %@ doesn't exists", selectedAudio);
         }
         [self loadAudiofiles];
     
@@ -576,10 +576,10 @@
 
 //                [self.activityIndicator stopAnimating];
             } else{
-                NSLog(@"Failed to play...");
+//                NSLog(@"Failed to play...");
             }
         } else {
-            NSLog(@"Failed to instantiate AVAudioPlayer...");
+//            NSLog(@"Failed to instantiate AVAudioPlayer...");
         }
     });
 }
