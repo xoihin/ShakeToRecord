@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import "Reachability.h"
+
 
 @interface AppDelegate ()
 
@@ -20,6 +22,22 @@
     
 //    NSLog(@"Documents folder: %@",[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject]);
     
+    Reachability *networkReachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus networkStatus = [networkReachability currentReachabilityStatus];
+    if (networkStatus == NotReachable) {
+//        NSLog(@"NO internet connection");
+        
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle:@"Important - No Internet Connection"
+                              message:@"Some features may require internet connection"
+                              delegate:self
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles: nil];
+        [alert show];
+    } else {
+//        NSLog(@"There IS internet connection");
+    }
+
     return YES;
 }
 
