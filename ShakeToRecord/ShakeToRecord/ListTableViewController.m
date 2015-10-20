@@ -66,7 +66,7 @@
     // The reason turning this on is because at the present time, there is an issue presenting UIAlertController while in UISearchController mode...
     self.definesPresentationContext = true;
 
-    self.tableView.estimatedRowHeight = 80;
+    self.tableView.estimatedRowHeight = 60;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
 }
 
@@ -349,6 +349,7 @@
     
     if ([fileNoExtension isEqualToString:myLastFileName]) {
         cell.textLabel.textColor = [UIColor orangeColor];
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:20.0f];
     } else {
         cell.textLabel.textColor = [UIColor blackColor];
     }
@@ -415,33 +416,6 @@
     return @[deleteAction, moreAction];
 }
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    return 60;
-//}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -459,6 +433,7 @@
 
         [self myPlayButton:nil];
     }
+//    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -610,7 +585,6 @@
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
 //    NSLog(@"Finished playing the song");
-    
     if ([player isEqual:self.myAudioPlayer]){
          self.myAudioPlayer = nil;
     }
@@ -658,31 +632,6 @@
     
     [self disableAllPlaybackButtons];
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 @end
