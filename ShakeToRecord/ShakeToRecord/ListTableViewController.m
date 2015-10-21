@@ -11,7 +11,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "CountdownViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
-#import "Reachability.h"
+
 
 
 
@@ -79,31 +79,6 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-
-- (void)checkInternetConnection {
-    Reachability *networkReachability = [Reachability reachabilityForInternetConnection];
-    NetworkStatus networkStatus = [networkReachability currentReachabilityStatus];
-    if (networkStatus == NotReachable) {
-        UIAlertController *alertController = [UIAlertController
-                                              alertControllerWithTitle:@"Important - No Internet Connection"
-                                              message:@"Some features may require internet connection"
-                                              preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction *okAction = [UIAlertAction
-                                   actionWithTitle:NSLocalizedString(@"OK", @"OK action")
-                                   style:UIAlertActionStyleDefault
-                                   handler:^(UIAlertAction *action)
-                                   {
-//                                       NSLog(@"OK action");
-                                   }];
-        [alertController addAction:okAction];
-        
-        [self presentViewController:alertController animated:YES completion:nil];
-    } else {
-//        NSLog(@"There IS internet connection");
-    }
 }
 
 
@@ -271,7 +246,7 @@
     [dateFormat setDateFormat:@"yyyyMMdd_HHmmss"];
     NSString *myDate = [dateFormat stringFromDate: myCurrentdate];
     
-    myFileName = [NSString stringWithFormat:@"%@%@%@", @"z_", myDate, @".m4a"];
+    myFileName = [NSString stringWithFormat:@"%@%@%@", @"Z_", myDate, @".m4a"];
 //    NSLog(@"File name is: %@", myFileName);
 }
 
@@ -284,7 +259,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self checkInternetConnection];
+   
     [self.tableView reloadData];
     [self animateTable];
     [self becomeFirstResponder];
@@ -528,55 +503,64 @@
 
 - (void)renameAudioFile {
     
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"File Name"
-                                                        message:@"Enter new file name:"
-                                                       delegate:self
-                                              cancelButtonTitle:@"Cancel"
-                                              otherButtonTitles:@"Ok", nil];
+    UIAlertController *alertController = [UIAlertController
+                                          alertControllerWithTitle:@"Rename"
+                                          message:@"Enter new file name:"
+                                          preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction *rename = [UIAlertAction
+                             actionWithTitle:@"Enter"
+                             style:UIAlertActionStyleDefault
+                             handler:^(UIAlertAction * action) {
+                                 
+                                 NSString *myNewFileName = ((UITextField *)[alertController.textFields objectAtIndex:0]).text;
+                                 // Rename
+                                 NSString *myExt = nil;
+                                 myExt = [selectedAudio pathExtension];
+                                 
+                                 NSString *myFinalName = nil;
+                                 myFinalName = [NSString stringWithFormat:@"%@%@%@", myNewFileName, @".", myExt];
+                                 
+                                 NSString *filePathSrc = [self.folderPath stringByAppendingPathComponent:selectedAudio];
+                                 NSString *filePathDst = [self.folderPath stringByAppendingPathComponent:myFinalName];
+                                 NSFileManager *manager = [NSFileManager defaultManager];
+                                 if ([manager fileExistsAtPath:filePathSrc]) {
+                                     
+                                     NSError *error = nil;
+                                     [manager moveItemAtPath:filePathSrc toPath:filePathDst error:&error];
+                                     
+                                     if (error) {
+                                         NSLog(@"There is an Error: %@", error);
+                                     }
+                                 } else {
+                                     NSLog(@"File %@ doesn't exists", selectedAudio);
+                                 }
+                                 [self loadAudiofiles];
+    }];
     
-    alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel"
+                                                     style:UIAlertActionStyleCancel
+                                                   handler:nil];
     
-    [alertView show];
+    [alertController addAction:rename];
+    [alertController addAction:cancel];
+    
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = @"New Name";
+    }];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 1) {  //File name entered...
-        
-        UITextField *myNewFileName = [alertView textFieldAtIndex:0];
-        
-        // Rename
-        NSString *myExt = nil;
-        myExt = [selectedAudio pathExtension];
-        
-        NSString *myFinalName = nil;
-        myFinalName = [NSString stringWithFormat:@"%@%@%@", myNewFileName.text, @".", myExt];
-        
-        NSString *filePathSrc = [self.folderPath stringByAppendingPathComponent:selectedAudio];
-        NSString *filePathDst = [self.folderPath stringByAppendingPathComponent:myFinalName];
-        NSFileManager *manager = [NSFileManager defaultManager];
-        if ([manager fileExistsAtPath:filePathSrc]) {
-            
-            NSError *error = nil;
-            [manager moveItemAtPath:filePathSrc toPath:filePathDst error:&error];
-            
-            if (error) {
-//                NSLog(@"There is an Error: %@", error);
-            }
-        } else {
-//            NSLog(@"File %@ doesn't exists", selectedAudio);
-        }
-        [self loadAudiofiles];
+- (void)renameFile {
     
-    }
+    
 }
-
 
 
 #pragma mark - Audio Playback
 
- 
+
 
 - (void)disableAllPlaybackButtons {
     self.playButtonOutlet.enabled = false;
@@ -585,8 +569,8 @@
     self.positionSlider.enabled = false;
 }
 
-                                 
-                                 
+
+
 - (void)playbackSetUp {
     
     // Path for audio file
