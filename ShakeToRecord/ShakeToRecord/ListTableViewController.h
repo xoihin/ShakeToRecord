@@ -15,10 +15,17 @@
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *pauseButtonOutlet;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *stopButtonOutlet;
 
+@property (strong, nonatomic) NSTimer *myAudioTimer;
+@property (strong, nonatomic) IBOutlet UISlider *positionSlider;
+
+- (IBAction)changePosition:(UISlider *)sender;
+
 
 - (IBAction)myPlayButton:(UIBarButtonItem *)sender;
 - (IBAction)myPauseButton:(UIBarButtonItem *)sender;
 - (IBAction)myStopButton:(UIBarButtonItem *)sender;
+
+
 
 
 @end

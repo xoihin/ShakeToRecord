@@ -42,10 +42,10 @@
 @implementation ListTableViewController
 
 
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.title = NSLocalizedString(@"Library", @"Library");
     
     shouldShowSearchResults = false;
 
@@ -61,6 +61,9 @@
     self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.activityIndicator];
     
+    // Init timer (playback)
+    self.myAudioTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateSlider) userInfo:nil repeats:YES];
+
     [self configureSearchController];
     
     // The reason turning this on is because at the present time, there is an issue presenting UIAlertController while in UISearchController mode...
@@ -553,6 +556,7 @@
     self.playButtonOutlet.enabled = false;
     self.pauseButtonOutlet.enabled = false;
     self.stopButtonOutlet.enabled = false;
+    self.positionSlider.enabled = false;
 }
 
                                  
@@ -571,13 +575,20 @@
         NSError *error = nil;
         self.myAudioPlayer = [[AVAudioPlayer alloc] initWithData:fileData error:&error];
         
+        self.positionSlider.maximumValue = self.myAudioPlayer.duration;
+        self.positionSlider.minimumValue = 0;
+        self.myAudioPlayer.currentTime = self.positionSlider.value;
+        
         if (self.myAudioPlayer != nil){
             /* Set the delegate and start playing */
             self.myAudioPlayer.delegate = self;
             
             if ([self.myAudioPlayer prepareToPlay] && [self.myAudioPlayer play]) {
 
-//                [self.activityIndicator stopAnimating];
+                if (self.myAudioTimer == nil) {
+                    self.myAudioTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateSlider) userInfo:nil repeats:YES];
+                }
+
             } else{
 //                NSLog(@"Failed to play...");
             }
@@ -612,6 +623,9 @@
 }
 
 
+- (IBAction)changePosition:(UISlider *)sender {
+    self.myAudioPlayer.currentTime = self.positionSlider.value;
+}
 
 - (IBAction)myPlayButton:(UIBarButtonItem *)sender {
     
@@ -624,12 +638,20 @@
     self.playButtonOutlet.enabled = false;
     self.pauseButtonOutlet.enabled = true;
     self.stopButtonOutlet.enabled = true;
+    self.positionSlider.enabled = true;
     
     [self.myAudioPlayer play];
+    
+    if (self.myAudioTimer ==nil) {
+        self.myAudioTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateSlider) userInfo:nil repeats:YES];
+    }
 }
 
 - (IBAction)myPauseButton:(UIBarButtonItem *)sender {
     [self.myAudioPlayer pause];
+    
+    [self.myAudioTimer invalidate];
+    self.myAudioTimer = nil;
     
     if (self.activityIndicator.isAnimating) {
         [self.activityIndicator stopAnimating];
@@ -644,12 +666,24 @@
     [self.myAudioPlayer stop];
     self.myAudioPlayer = nil;
     
+    [self.myAudioPlayer setCurrentTime:0];
+    self.positionSlider.value = self.myAudioPlayer.currentTime;
+    [self.myAudioTimer invalidate];
+    self.myAudioTimer = nil;
+    
     if (self.activityIndicator.isAnimating) {
         [self.activityIndicator stopAnimating];
     }
     
     [self disableAllPlaybackButtons];
 }
+
+- (void)updateSlider {
+    [self.positionSlider setValue:self.myAudioPlayer.currentTime];
+}
+
+
+
 
 
 @end
