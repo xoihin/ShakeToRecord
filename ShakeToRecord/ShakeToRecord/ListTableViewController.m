@@ -11,6 +11,8 @@
 #import <AVFoundation/AVFoundation.h>
 #import "CountdownViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "Reachability.h"
+
 
 
 @interface ListTableViewController () <AVAudioRecorderDelegate, AVAudioPlayerDelegate, UISearchResultsUpdating, UISearchBarDelegate>
@@ -47,6 +49,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // The reason turning this on is because at the present time, there is an issue presenting UIAlertController while in UISearchController mode...
+    self.definesPresentationContext = true;
+    
     shouldShowSearchResults = false;
 
     // full path to Documents directory
@@ -66,9 +71,6 @@
 
     [self configureSearchController];
     
-    // The reason turning this on is because at the present time, there is an issue presenting UIAlertController while in UISearchController mode...
-    self.definesPresentationContext = true;
-
     self.tableView.estimatedRowHeight = 60;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
 }
@@ -79,6 +81,30 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+- (void)checkInternetConnection {
+    Reachability *networkReachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus networkStatus = [networkReachability currentReachabilityStatus];
+    if (networkStatus == NotReachable) {
+        UIAlertController *alertController = [UIAlertController
+                                              alertControllerWithTitle:@"Important - No Internet Connection"
+                                              message:@"Some features may require internet connection"
+                                              preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *okAction = [UIAlertAction
+                                   actionWithTitle:NSLocalizedString(@"OK", @"OK action")
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction *action)
+                                   {
+//                                       NSLog(@"OK action");
+                                   }];
+        [alertController addAction:okAction];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+    } else {
+//        NSLog(@"There IS internet connection");
+    }
+}
 
 
 - (void)loadAudiofiles {
@@ -258,7 +284,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
+    [self checkInternetConnection];
     [self.tableView reloadData];
     [self animateTable];
     [self becomeFirstResponder];
