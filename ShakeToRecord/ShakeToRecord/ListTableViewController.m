@@ -141,6 +141,7 @@
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    [self myStopButton:nil];
     shouldShowSearchResults = true;
     [self.tableView reloadData];
 }
@@ -430,18 +431,15 @@
     [self.activityIndicator startAnimating];
     
     selectedAudio = nil;
-    
-    if (!self.myAudioPlayer.playing) {
-        
-        if (shouldShowSearchResults) {
-            selectedAudio = [self.filterArray objectAtIndex:indexPath.row];
-            [self.searchController.searchBar resignFirstResponder];
-        } else {
-            selectedAudio = [self.mediaArray objectAtIndex:indexPath.row];
-        }
-
-        [self myPlayButton:nil];
+    if (shouldShowSearchResults) {
+        selectedAudio = [self.filterArray objectAtIndex:indexPath.row];
+        [self.searchController.searchBar resignFirstResponder];
+    } else {
+        selectedAudio = [self.mediaArray objectAtIndex:indexPath.row];
     }
+    
+    [self myPlayButton:nil];
+
 //    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
