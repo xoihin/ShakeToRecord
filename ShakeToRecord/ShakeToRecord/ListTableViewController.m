@@ -536,13 +536,18 @@
                                  } else {
                                      NSLog(@"File %@ doesn't exists", selectedAudio);
                                  }
+                                 
+                                 if (shouldShowSearchResults) {
+                                     self.searchController.active = false;
+                                     [self.searchController.searchBar resignFirstResponder];
+                                     shouldShowSearchResults = false;
+                                 }
                                  [self loadAudiofiles];
     }];
     
     UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel"
                                                      style:UIAlertActionStyleCancel
                                                    handler:nil];
-    
     [alertController addAction:rename];
     [alertController addAction:cancel];
     
@@ -553,10 +558,6 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-- (void)renameFile {
-    
-    
-}
 
 
 #pragma mark - Audio Playback
