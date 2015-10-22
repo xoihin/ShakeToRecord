@@ -435,6 +435,7 @@
         
         if (shouldShowSearchResults) {
             selectedAudio = [self.filterArray objectAtIndex:indexPath.row];
+            [self.searchController.searchBar resignFirstResponder];
         } else {
             selectedAudio = [self.mediaArray objectAtIndex:indexPath.row];
         }
