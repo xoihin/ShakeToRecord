@@ -56,7 +56,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="rLR-HZ-Wh2"/>
-                        <barButtonItem enabled="NO" title="Info" id="EDk-cT-kaI">
+                        <barButtonItem enabled="NO" image="Info22.png" style="done" id="EDk-cT-kaI">
                             <connections>
                                 <action selector="infoButton:" destination="PlR-bX-f8S" id="zuz-fJ-gx1"/>
                             </connections>
@@ -109,4 +109,7 @@
             <point key="canvasLocation" x="784" y="539"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Info22.png" width="22" height="22"/>
+    </resources>
 </document>

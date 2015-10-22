@@ -542,6 +542,8 @@
                                      [self.searchController.searchBar resignFirstResponder];
                                      shouldShowSearchResults = false;
                                  }
+                                 
+                                 myLastFileName = myFinalName;
                                  [self loadAudiofiles];
     }];
     
