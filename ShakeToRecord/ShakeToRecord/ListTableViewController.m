@@ -569,6 +569,7 @@
     self.pauseButtonOutlet.enabled = false;
     self.stopButtonOutlet.enabled = false;
     self.positionSlider.enabled = false;
+    self.infoButtonOutlet.enabled = false;
 }
 
 
@@ -651,6 +652,7 @@
     self.pauseButtonOutlet.enabled = true;
     self.stopButtonOutlet.enabled = true;
     self.positionSlider.enabled = true;
+    self.infoButtonOutlet.enabled = true;
     
     [self.myAudioPlayer play];
     
@@ -690,9 +692,45 @@
     [self disableAllPlaybackButtons];
 }
 
+- (IBAction)infoButton:(UIBarButtonItem *)sender {
+    
+    NSString *audioDuration = @"";
+    double myDuration = self.myAudioPlayer.duration;
+    
+    int myMinutes = floor(myDuration/60);
+    int mySeconds = trunc(myDuration - myMinutes * 60);
+    
+    if (mySeconds < 10) {
+        audioDuration = [NSString stringWithFormat:@"0%i:0%i", myMinutes, mySeconds];
+    } else {
+        audioDuration = [NSString stringWithFormat:@"0%i:%i", myMinutes, mySeconds];
+    }
+    
+    UIAlertController *alertController = [UIAlertController
+                                          alertControllerWithTitle:selectedAudio
+                                          message:audioDuration
+                                          preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"OK"
+                                                     style:UIAlertActionStyleCancel
+                                                   handler:nil];
+    [alertController addAction:cancel];
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
 - (void)updateSlider {
     [self.positionSlider setValue:self.myAudioPlayer.currentTime];
 }
+
+
+
+
+
+
+
+
+
+
 
 
 

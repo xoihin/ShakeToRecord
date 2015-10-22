@@ -55,6 +55,12 @@
                                 <action selector="myStopButton:" destination="PlR-bX-f8S" id="KzK-OY-Thg"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="rLR-HZ-Wh2"/>
+                        <barButtonItem enabled="NO" title="Info" id="EDk-cT-kaI">
+                            <connections>
+                                <action selector="infoButton:" destination="PlR-bX-f8S" id="zuz-fJ-gx1"/>
+                            </connections>
+                        </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="IGW-eP-Bvr">
                         <nil key="title"/>
@@ -67,6 +73,7 @@
                         </slider>
                     </navigationItem>
                     <connections>
+                        <outlet property="infoButtonOutlet" destination="EDk-cT-kaI" id="E9j-fQ-bUQ"/>
                         <outlet property="pauseButtonOutlet" destination="DgH-2r-lCo" id="loj-ZS-u2G"/>
                         <outlet property="playButtonOutlet" destination="B2Y-ux-9G2" id="bRj-I8-9PJ"/>
                         <outlet property="positionSlider" destination="jwu-aR-jme" id="gnY-rJ-elt"/>
