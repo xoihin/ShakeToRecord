@@ -124,6 +124,7 @@
     NSError *error = nil;
     AVAudioSession *session = [AVAudioSession sharedInstance];
     [session setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
+    [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
     
     // Define the recorder setting
     NSMutableDictionary *recordSetting = [[NSMutableDictionary alloc] init];
@@ -176,7 +177,7 @@
     [dateFormat setDateFormat:@"yyyyMMdd_HHmmss"];
     NSString *myDate = [dateFormat stringFromDate: myCurrentdate];
     
-    myFileName = [NSString stringWithFormat:@"%@%@%@", @"z_", myDate, @".m4a"];
+    myFileName = [NSString stringWithFormat:@"%@%@%@", @"Z_", myDate, @".m4a"];
 //    NSLog(@"File name is: %@", myFileName);
 }
 
