@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ShakeToRecordTableViewController : UITableViewController
+@interface ListTableViewController : UITableViewController
 
 @end
