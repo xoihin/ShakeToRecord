@@ -231,6 +231,7 @@
     {
         [self.myAudioRecorder stop];
         AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        [audioSession setCategory:AVAudioSessionCategoryPlayback error:nil];
         [audioSession setActive:NO error:nil];
         
         [self loadAudiofiles];
