@@ -124,6 +124,7 @@
     NSError *error = nil;
     AVAudioSession *session = [AVAudioSession sharedInstance];
     [session setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
+    [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
     
     // Define the recorder setting
     NSMutableDictionary *recordSetting = [[NSMutableDictionary alloc] init];
