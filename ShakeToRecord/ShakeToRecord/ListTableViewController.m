@@ -602,7 +602,7 @@
     self.pauseButtonOutlet.enabled = false;
     self.stopButtonOutlet.enabled = false;
     self.positionSlider.enabled = false;
-    self.infoButtonOutlet.enabled = false;
+   
 }
 
 
@@ -685,7 +685,6 @@
     self.pauseButtonOutlet.enabled = true;
     self.stopButtonOutlet.enabled = true;
     self.positionSlider.enabled = true;
-    self.infoButtonOutlet.enabled = true;
     
     [self.myAudioPlayer play];
     
@@ -725,21 +724,21 @@
     [self disableAllPlaybackButtons];
 }
 
-- (IBAction)infoButton:(UIBarButtonItem *)sender {
-    
-    [self getDuration];
-    
-    UIAlertController *alertController = [UIAlertController
-                                          alertControllerWithTitle:selectedAudio
-                                          message:audioDuration
-                                          preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction* cancel = [UIAlertAction actionWithTitle:kOkay
-                                                     style:UIAlertActionStyleCancel
-                                                   handler:nil];
-    [alertController addAction:cancel];
-    [self presentViewController:alertController animated:YES completion:nil];
-}
+//- (IBAction)infoButton:(UIBarButtonItem *)sender {
+//    
+//    [self getDuration];
+//    
+//    UIAlertController *alertController = [UIAlertController
+//                                          alertControllerWithTitle:selectedAudio
+//                                          message:audioDuration
+//                                          preferredStyle:UIAlertControllerStyleAlert];
+//    
+//    UIAlertAction* cancel = [UIAlertAction actionWithTitle:kOkay
+//                                                     style:UIAlertActionStyleCancel
+//                                                   handler:nil];
+//    [alertController addAction:cancel];
+//    [self presentViewController:alertController animated:YES completion:nil];
+//}
 
 - (void)updateSlider {
     [self.positionSlider setValue:self.myAudioPlayer.currentTime];
