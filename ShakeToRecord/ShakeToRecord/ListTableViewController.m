@@ -34,6 +34,7 @@
 #define kEnterFileName NSLocalizedString(@"Enter new file name:", @"Enter new file name:")
 #define kEnter NSLocalizedString(@"Enter", @"Enter")
 #define kNewName NSLocalizedString(@"New Name", @"New Name")
+#define kOkay NSLocalizedString(@"OK", @"OK")
 
 
 
@@ -476,7 +477,7 @@
     }];
     [alertController addAction:rename];
     
-    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:kCancelAction style:UIAlertActionStyleCancel handler:nil];
     [alertController addAction:cancel];
     
     UIAlertAction *share = [UIAlertAction actionWithTitle:kCancelAction style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
@@ -725,7 +726,7 @@
                                           message:audioDuration
                                           preferredStyle:UIAlertControllerStyleAlert];
     
-    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"OK"
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:kOkay
                                                      style:UIAlertActionStyleCancel
                                                    handler:nil];
     [alertController addAction:cancel];
