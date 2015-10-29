@@ -24,6 +24,7 @@
     
 }
 
+
 #define kDeleteButton NSLocalizedString(@"Delete", @"Delete")
 #define kMoreButton NSLocalizedString(@"More", @"More")
 #define kAlertActions NSLocalizedString(@"Actions", @"Actions")
@@ -31,7 +32,6 @@
 #define kRenameAction NSLocalizedString(@"Rename", @"Rename")
 #define kCancelAction NSLocalizedString(@"Cancel", @"Cancel")
 #define kEnterFileName NSLocalizedString(@"Enter new file name:", @"Enter new file name:")
-
 #define kEnter NSLocalizedString(@"Enter", @"Enter")
 #define kNewName NSLocalizedString(@"New Name", @"New Name")
 
