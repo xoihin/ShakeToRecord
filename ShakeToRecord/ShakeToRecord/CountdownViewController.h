@@ -16,6 +16,8 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *countdownLabel;
 
+@property (strong, nonatomic) IBOutlet UILabel *screenWillDimLabel;
+@property (strong, nonatomic) IBOutlet UILabel *shakeAgain;
 
 
 
