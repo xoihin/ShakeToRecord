@@ -745,20 +745,20 @@
 }
 
 
-- (void)getDuration {
-    
-    audioDuration = @"";
-    double myDuration = self.myAudioPlayer.duration;
-    
-    int myMinutes = floor(myDuration/60);
-    int mySeconds = trunc(myDuration - myMinutes * 60);
-    
-    if (mySeconds < 10) {
-        audioDuration = [NSString stringWithFormat:@"%i:0%i", myMinutes, mySeconds];
-    } else {
-        audioDuration = [NSString stringWithFormat:@"%i:%i", myMinutes, mySeconds];
-    }
-}
+//- (void)getDuration {
+//    
+//    audioDuration = @"";
+//    double myDuration = self.myAudioPlayer.duration;
+//    
+//    int myMinutes = floor(myDuration/60);
+//    int mySeconds = trunc(myDuration - myMinutes * 60);
+//    
+//    if (mySeconds < 10) {
+//        audioDuration = [NSString stringWithFormat:@"%i:0%i", myMinutes, mySeconds];
+//    } else {
+//        audioDuration = [NSString stringWithFormat:@"%i:%i", myMinutes, mySeconds];
+//    }
+//}
 
 
 
