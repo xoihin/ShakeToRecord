@@ -24,6 +24,19 @@
     
 }
 
+#define kDeleteButton NSLocalizedString(@"Delete", @"Delete")
+#define kMoreButton NSLocalizedString(@"More", @"More")
+#define kAlertActions NSLocalizedString(@"Actions", @"Actions")
+#define kOnSelectedRow NSLocalizedString(@"On selected row", @"On selected row")
+#define kRenameAction NSLocalizedString(@"Rename", @"Rename")
+#define kCancelAction NSLocalizedString(@"Cancel", @"Cancel")
+#define kEnterFileName NSLocalizedString(@"Enter new file name:", @"Enter new file name:")
+
+#define kEnter NSLocalizedString(@"Enter", @"Enter")
+#define kNewName NSLocalizedString(@"New Name", @"New Name")
+
+
+
 @property (nonatomic, strong) NSMutableArray *mediaArray;
 @property (nonatomic, strong) NSMutableArray *filterArray;
 
@@ -397,7 +410,7 @@
 
     
     // Delete action
-    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"Delete" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:kDeleteButton handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
         
         NSString *fullFileName = [NSString stringWithFormat:@"%@/%@", self.folderPath, selectedAudio];
         [[NSFileManager defaultManager] removeItemAtPath:fullFileName error: NULL];
@@ -417,7 +430,7 @@
     
     
     // More actions
-    UITableViewRowAction *moreAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"More" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+    UITableViewRowAction *moreAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:kMoreButton handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
         // show UIActionSheet
         [self performAlertController];
     }];
@@ -456,9 +469,9 @@
 
 - (void)performAlertController {
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Actions" message:@"On selected row" preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:kAlertActions message:kOnSelectedRow preferredStyle:UIAlertControllerStyleActionSheet];
     
-    UIAlertAction *rename = [UIAlertAction actionWithTitle:@"Rename" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+    UIAlertAction *rename = [UIAlertAction actionWithTitle:kRenameAction style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         [self renameAudioFile];
     }];
     [alertController addAction:rename];
@@ -466,7 +479,7 @@
     UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     [alertController addAction:cancel];
     
-    UIAlertAction *share = [UIAlertAction actionWithTitle:@"Share" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+    UIAlertAction *share = [UIAlertAction actionWithTitle:kCancelAction style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         [self shareAudioFile];
     }];
     [alertController addAction:share];
@@ -504,12 +517,12 @@
 - (void)renameAudioFile {
     
     UIAlertController *alertController = [UIAlertController
-                                          alertControllerWithTitle:@"Rename"
-                                          message:@"Enter new file name:"
+                                          alertControllerWithTitle:kRenameAction
+                                          message:kEnterFileName
                                           preferredStyle:UIAlertControllerStyleAlert];
 
     UIAlertAction *rename = [UIAlertAction
-                             actionWithTitle:@"Enter"
+                             actionWithTitle:kEnter
                              style:UIAlertActionStyleDefault
                              handler:^(UIAlertAction * action) {
                                  
@@ -546,14 +559,14 @@
                                  [self loadAudiofiles];
     }];
     
-    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel"
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:kCancelAction
                                                      style:UIAlertActionStyleCancel
                                                    handler:nil];
     [alertController addAction:rename];
     [alertController addAction:cancel];
     
     [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        textField.placeholder = @"New Name";
+        textField.placeholder = kNewName;
     }];
     
     [self presentViewController:alertController animated:YES completion:nil];
