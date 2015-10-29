@@ -21,6 +21,7 @@
     NSString *myLastFileName;
     NSString *selectedAudio;
     BOOL shouldShowSearchResults;
+    NSString *audioDuration;
     
 }
 
@@ -339,9 +340,6 @@
 
 
 
-
-
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -379,6 +377,26 @@
     }
     
     cell.textLabel.text = [[fileNoExtension lastPathComponent]stringByDeletingPathExtension];
+    
+    // Retrieve audio duration
+    NSString *getAudioPath = [self.folderPath stringByAppendingPathComponent:fileNoExtension];
+    NSURL *finalUrl=[[NSURL alloc]initFileURLWithPath:getAudioPath];
+//    NSLog(@"finalUrl===%@",finalUrl);
+    
+    AVURLAsset* audioAsset = [AVURLAsset URLAssetWithURL:finalUrl options:nil];
+    CMTime durationOfAudio = audioAsset.duration;
+    float audioDurationSeconds = CMTimeGetSeconds(durationOfAudio);
+//    NSLog(@"duration==%2f",audioDurationSeconds);
+    
+    int myMinutes = floor(audioDurationSeconds/60);
+    int mySeconds = trunc(audioDurationSeconds - myMinutes * 60);
+    
+    if (mySeconds < 10) {
+        audioDuration = [NSString stringWithFormat:@"%i:0%i", myMinutes, mySeconds];
+    } else {
+        audioDuration = [NSString stringWithFormat:@"%i:%i", myMinutes, mySeconds];
+    }
+    cell.detailTextLabel.text = audioDuration;
     
     return cell;
 }
@@ -709,17 +727,7 @@
 
 - (IBAction)infoButton:(UIBarButtonItem *)sender {
     
-    NSString *audioDuration = @"";
-    double myDuration = self.myAudioPlayer.duration;
-    
-    int myMinutes = floor(myDuration/60);
-    int mySeconds = trunc(myDuration - myMinutes * 60);
-    
-    if (mySeconds < 10) {
-        audioDuration = [NSString stringWithFormat:@"0%i:0%i", myMinutes, mySeconds];
-    } else {
-        audioDuration = [NSString stringWithFormat:@"0%i:%i", myMinutes, mySeconds];
-    }
+    [self getDuration];
     
     UIAlertController *alertController = [UIAlertController
                                           alertControllerWithTitle:selectedAudio
@@ -738,6 +746,20 @@
 }
 
 
+- (void)getDuration {
+    
+    audioDuration = @"";
+    double myDuration = self.myAudioPlayer.duration;
+    
+    int myMinutes = floor(myDuration/60);
+    int mySeconds = trunc(myDuration - myMinutes * 60);
+    
+    if (mySeconds < 10) {
+        audioDuration = [NSString stringWithFormat:@"%i:0%i", myMinutes, mySeconds];
+    } else {
+        audioDuration = [NSString stringWithFormat:@"%i:%i", myMinutes, mySeconds];
+    }
+}
 
 
 
