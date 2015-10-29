@@ -17,7 +17,7 @@
 		F686738D1BCF6F7F007A30C0 /* CountdownViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F686738B1BCF6F7F007A30C0 /* CountdownViewController.xib */; };
 		F69E640B1BCDDB9A006E993F /* ListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F69E640A1BCDDB9A006E993F /* ListTableViewController.m */; };
 		F6A320051BD69C3B00D1CAD5 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F6A320041BD69C3B00D1CAD5 /* Reachability.m */; };
-		F6B17EDC1BD90A3500298B80 /* Info22.png in Resources */ = {isa = PBXBuildFile; fileRef = F6B17EDB1BD90A3500298B80 /* Info22.png */; settings = {ASSET_TAGS = (); }; };
+		F6B17EDC1BD90A3500298B80 /* Info22.png in Resources */ = {isa = PBXBuildFile; fileRef = F6B17EDB1BD90A3500298B80 /* Info22.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
