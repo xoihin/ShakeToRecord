@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Xgk-JF-psM">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
@@ -33,7 +34,31 @@
                             <outlet property="delegate" destination="PlR-bX-f8S" id="kt6-Mp-bev"/>
                         </connections>
                     </tableView>
+                    <toolbarItems>
+                        <barButtonItem enabled="NO" systemItem="play" id="B2Y-ux-9G2">
+                            <connections>
+                                <action selector="myPlayButton:" destination="PlR-bX-f8S" id="Ny4-5K-TKf"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="eAd-zG-DVq"/>
+                        <barButtonItem enabled="NO" systemItem="pause" id="DgH-2r-lCo">
+                            <connections>
+                                <action selector="myPauseButton:" destination="PlR-bX-f8S" id="xtt-31-Z0f"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="8ZZ-mz-y4H"/>
+                        <barButtonItem enabled="NO" systemItem="stop" id="lAV-JH-G9M">
+                            <connections>
+                                <action selector="myStopButton:" destination="PlR-bX-f8S" id="KzK-OY-Thg"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" id="IGW-eP-Bvr"/>
+                    <connections>
+                        <outlet property="pauseButtonOutlet" destination="DgH-2r-lCo" id="loj-ZS-u2G"/>
+                        <outlet property="playButtonOutlet" destination="B2Y-ux-9G2" id="bRj-I8-9PJ"/>
+                        <outlet property="stopButtonOutlet" destination="lAV-JH-G9M" id="z1T-4H-Uni"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="awu-SA-hQ0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
