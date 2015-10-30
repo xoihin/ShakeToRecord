@@ -18,7 +18,21 @@
     NSString *myFileName;
     NSString *myLastFileName;
     NSString *selectedAudio;
+    
 }
+
+
+#define kDeleteButton NSLocalizedString(@"Delete", @"Delete")
+#define kMoreButton NSLocalizedString(@"More", @"More")
+#define kAlertActions NSLocalizedString(@"Actions", @"Actions")
+#define kOnSelectedRow NSLocalizedString(@"On selected row", @"On selected row")
+#define kRenameAction NSLocalizedString(@"Rename", @"Rename")
+#define kCancelAction NSLocalizedString(@"Cancel", @"Cancel")
+#define kEnterFileName NSLocalizedString(@"Enter new file name:", @"Enter new file name:")
+#define kEnter NSLocalizedString(@"Enter", @"Enter")
+#define kNewName NSLocalizedString(@"New Name", @"New Name")
+#define kOkay NSLocalizedString(@"OK", @"OK")
+
 
 @property (nonatomic, strong) NSMutableArray *mediaArray;
 
@@ -264,6 +278,28 @@
     }
     
     cell.textLabel.text = [[fileNoExtension lastPathComponent]stringByDeletingPathExtension];
+
+    // Retrieve audio duration
+    NSString *getAudioPath = [self.folderPath stringByAppendingPathComponent:fileNoExtension];
+    NSURL *finalUrl=[[NSURL alloc]initFileURLWithPath:getAudioPath];
+    //    NSLog(@"finalUrl===%@",finalUrl);
+    
+    AVURLAsset* audioAsset = [AVURLAsset URLAssetWithURL:finalUrl options:nil];
+    CMTime durationOfAudio = audioAsset.duration;
+    float audioDurationSeconds = CMTimeGetSeconds(durationOfAudio);
+    //    NSLog(@"duration==%2f",audioDurationSeconds);
+    
+    NSString *audioDuration = @"";
+    int myMinutes = floor(audioDurationSeconds/60);
+    int mySeconds = trunc(audioDurationSeconds - myMinutes * 60);
+    
+    if (mySeconds < 10) {
+        audioDuration = [NSString stringWithFormat:@"%i:0%i", myMinutes, mySeconds];
+    } else {
+        audioDuration = [NSString stringWithFormat:@"%i:%i", myMinutes, mySeconds];
+    }
+    cell.detailTextLabel.text = audioDuration;
+
     
     return cell;
 }
@@ -286,7 +322,7 @@
 -(NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     // Delete action
-    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"Delete" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:kDeleteButton handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
         
         NSString * objectToDelete = [[NSString alloc]init];
         objectToDelete = [_mediaArray objectAtIndex:[indexPath row]];
@@ -300,7 +336,7 @@
     deleteAction.backgroundColor = [UIColor redColor];
     
     // More actions
-    UITableViewRowAction *moreAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"More" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+    UITableViewRowAction *moreAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:kMoreButton handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
 
         // Obtain audio name
         selectedAudio = nil;
@@ -362,14 +398,14 @@
 
 - (void)performAlertController {
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Actions" message:@"Perform on row" preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:kAlertActions message:kOnSelectedRow preferredStyle:UIAlertControllerStyleActionSheet];
     
-    UIAlertAction* rename = [UIAlertAction actionWithTitle:@"Rename" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+    UIAlertAction* rename = [UIAlertAction actionWithTitle:kRenameAction style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         [self renameAudioFile];
     }];
     [alertController addAction:rename];
     
-    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:kCancelAction style:UIAlertActionStyleCancel handler:nil];
     [alertController addAction:cancel];
     
     [self presentViewController:alertController animated:YES completion:nil];
@@ -377,11 +413,11 @@
 
 - (void)renameAudioFile {
     
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"File Name"
-                                                        message:@"Enter the file name:"
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
+                                                        message:kEnterFileName
                                                        delegate:self
-                                              cancelButtonTitle:@"Cancel"
-                                              otherButtonTitles:@"Ok", nil];
+                                              cancelButtonTitle:kCancelAction
+                                              otherButtonTitles:kOkay, nil];
     
     alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
     
