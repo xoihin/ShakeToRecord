@@ -191,7 +191,7 @@
     [dateFormat setDateFormat:@"yyyyMMdd_HHmmss"];
     NSString *myDate = [dateFormat stringFromDate: myCurrentdate];
     
-    myFileName = [NSString stringWithFormat:@"%@%@%@", @"z_", myDate, @".m4a"];
+    myFileName = [NSString stringWithFormat:@"%@%@%@", @"Z_", myDate, @".m4a"];
 //    NSLog(@"File name is: %@", myFileName);
 }
 
