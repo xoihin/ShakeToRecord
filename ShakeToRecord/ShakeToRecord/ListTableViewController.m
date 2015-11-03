@@ -14,7 +14,6 @@
 
 
 
-
 @interface ListTableViewController () <AVAudioRecorderDelegate, AVAudioPlayerDelegate, UISearchResultsUpdating, UISearchBarDelegate>
 {
     NSString *myFileName;
@@ -32,6 +31,7 @@
 #define kOnSelectedRow NSLocalizedString(@"On selected row", @"On selected row")
 #define kRenameAction NSLocalizedString(@"Rename", @"Rename")
 #define kCancelAction NSLocalizedString(@"Cancel", @"Cancel")
+#define kShareAction NSLocalizedString(@"Share", @"Share")
 #define kEnterFileName NSLocalizedString(@"Enter new file name:", @"Enter new file name:")
 #define kEnter NSLocalizedString(@"Enter", @"Enter")
 #define kNewName NSLocalizedString(@"New Name", @"New Name")
@@ -498,7 +498,7 @@
     UIAlertAction* cancel = [UIAlertAction actionWithTitle:kCancelAction style:UIAlertActionStyleCancel handler:nil];
     [alertController addAction:cancel];
     
-    UIAlertAction *share = [UIAlertAction actionWithTitle:kCancelAction style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+    UIAlertAction *share = [UIAlertAction actionWithTitle:kShareAction style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         [self shareAudioFile];
     }];
     [alertController addAction:share];
