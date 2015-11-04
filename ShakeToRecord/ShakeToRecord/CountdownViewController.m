@@ -10,16 +10,23 @@
 
 @interface CountdownViewController ()
 
+#define kScreenWillDim NSLocalizedString(@"Screen will dim.", @"Screen will dim.")
+#define kShakeAgain NSLocalizedString(@"Shake again to save recording.", @"Shake again to save recording.")
+
+
 @end
 
 @implementation CountdownViewController
 
-@synthesize countdownTimer, countdownLabel, secondsCount;
+@synthesize countdownTimer, countdownLabel, secondsCount, screenWillDim, shakeAgain;
 
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    screenWillDim.text = kScreenWillDim;
+    shakeAgain.text = kShakeAgain;
     
     [self setTimer];
 }

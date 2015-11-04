@@ -18,7 +18,21 @@
     NSString *myFileName;
     NSString *myLastFileName;
     NSString *selectedAudio;
+    
 }
+
+
+#define kDeleteButton NSLocalizedString(@"Delete", @"Delete")
+#define kMoreButton NSLocalizedString(@"More", @"More")
+#define kAlertActions NSLocalizedString(@"Actions", @"Actions")
+#define kOnSelectedRow NSLocalizedString(@"On selected row", @"On selected row")
+#define kRenameAction NSLocalizedString(@"Rename", @"Rename")
+#define kCancelAction NSLocalizedString(@"Cancel", @"Cancel")
+#define kEnterFileName NSLocalizedString(@"Enter new file name:", @"Enter new file name:")
+#define kEnter NSLocalizedString(@"Enter", @"Enter")
+#define kNewName NSLocalizedString(@"New Name", @"New Name")
+#define kOkay NSLocalizedString(@"OK", @"OK")
+
 
 @property (nonatomic, strong) NSMutableArray *mediaArray;
 
@@ -197,8 +211,6 @@
 
 - (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event {
     if(event.type == UIEventSubtypeMotionShake) {
-//        NSLog(@"Shake detected...");
-        
         // Stop playback if needed.
         if (_myAudioPlayer.playing) {
             [self myStopButton:nil];
@@ -266,30 +278,77 @@
     }
     
     cell.textLabel.text = [[fileNoExtension lastPathComponent]stringByDeletingPathExtension];
+
+    // Retrieve audio duration
+    NSString *getAudioPath = [self.folderPath stringByAppendingPathComponent:fileNoExtension];
+    NSURL *finalUrl=[[NSURL alloc]initFileURLWithPath:getAudioPath];
+    //    NSLog(@"finalUrl===%@",finalUrl);
+    
+    AVURLAsset* audioAsset = [AVURLAsset URLAssetWithURL:finalUrl options:nil];
+    CMTime durationOfAudio = audioAsset.duration;
+    float audioDurationSeconds = CMTimeGetSeconds(durationOfAudio);
+    //    NSLog(@"duration==%2f",audioDurationSeconds);
+    
+    NSString *audioDuration = @"";
+    int myMinutes = floor(audioDurationSeconds/60);
+    int mySeconds = trunc(audioDurationSeconds - myMinutes * 60);
+    
+    if (mySeconds < 10) {
+        audioDuration = [NSString stringWithFormat:@"%i:0%i", myMinutes, mySeconds];
+    } else {
+        audioDuration = [NSString stringWithFormat:@"%i:%i", myMinutes, mySeconds];
+    }
+    cell.detailTextLabel.text = audioDuration;
+
     
     return cell;
 }
 
 
-/*
+
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     // Return NO if you do not want the specified item to be editable.
     return YES;
 }
-*/
 
-/*
+
+
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+ 
 }
-*/
+
+-(NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    // Delete action
+    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:kDeleteButton handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+        
+        NSString * objectToDelete = [[NSString alloc]init];
+        objectToDelete = [_mediaArray objectAtIndex:[indexPath row]];
+        NSString *fullFileName = [NSString stringWithFormat:@"%@/%@", _folderPath, objectToDelete];
+        [[NSFileManager defaultManager] removeItemAtPath:fullFileName error: NULL];
+        
+        // Remove from table view
+        [_mediaArray removeObjectAtIndex:indexPath.row];
+        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }];
+    deleteAction.backgroundColor = [UIColor redColor];
+    
+    // More actions
+    UITableViewRowAction *moreAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:kMoreButton handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+
+        // Obtain audio name
+        selectedAudio = nil;
+        selectedAudio = [_mediaArray objectAtIndex:indexPath.row];
+        
+        // show UIActionSheet
+        [self performAlertController];
+    }];
+    moreAction.backgroundColor = [UIColor orangeColor];
+    
+    return @[deleteAction, moreAction];
+}
 
 /*
 // Override to support rearranging the table view.
@@ -315,26 +374,85 @@
 }
 */
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 60;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-//    NSLog(@"Audio selected");
-    
     selectedAudio = nil;
     
     if (!_myAudioPlayer.playing) {
-        
         selectedAudio = [_mediaArray objectAtIndex:indexPath.row];
-        
         [self myPlayButton:nil];
     }
 }
 
-
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    NSLog(@"did de-select row...");
-    
     if (_myAudioPlayer.playing) {
         [self myStopButton:nil];
+    }
+}
+
+
+#pragma mark - Action Sheet
+
+- (void)performAlertController {
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:kAlertActions message:kOnSelectedRow preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction* rename = [UIAlertAction actionWithTitle:kRenameAction style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        [self renameAudioFile];
+    }];
+    [alertController addAction:rename];
+    
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:kCancelAction style:UIAlertActionStyleCancel handler:nil];
+    [alertController addAction:cancel];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)renameAudioFile {
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
+                                                        message:kEnterFileName
+                                                       delegate:self
+                                              cancelButtonTitle:kCancelAction
+                                              otherButtonTitles:kOkay, nil];
+    
+    alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+    
+    [alertView show];
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {  //File name entered...
+        
+        UITextField *myNewFileName = [alertView textFieldAtIndex:0];
+        
+        // Rename
+        NSString *myExt = [[NSString alloc]init];
+        myExt = [selectedAudio pathExtension];
+        
+        NSString *myFinalName = [[NSString alloc]init];
+        myFinalName = [NSString stringWithFormat:@"%@%@%@", myNewFileName.text, @".", myExt];
+        
+        NSString *filePathSrc = [_folderPath stringByAppendingPathComponent:selectedAudio];
+        NSString *filePathDst = [_folderPath stringByAppendingPathComponent:myFinalName];
+        NSFileManager *manager = [NSFileManager defaultManager];
+        if ([manager fileExistsAtPath:filePathSrc]) {
+            
+            NSError *error = nil;
+            [manager moveItemAtPath:filePathSrc toPath:filePathDst error:&error];
+            
+            if (error) {
+                NSLog(@"There is an Error: %@", error);
+            }
+        } else {
+            NSLog(@"File %@ doesn't exists", selectedAudio);
+        }
+        [self loadAudiofiles];
+        [self.tableView reloadData];
     }
 }
 
