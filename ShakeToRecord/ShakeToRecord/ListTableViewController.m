@@ -518,14 +518,21 @@
     
     UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:objectsToShare applicationActivities:nil];
     
-    // Exclude all activities except AirDrop.
-    NSArray *excludedActivities = @[UIActivityTypePostToTwitter, UIActivityTypePostToFacebook,
+    // Exclude some activities.
+    NSArray *excludedActivities = @[UIActivityTypePostToTwitter,
+                                    UIActivityTypePostToFacebook,
                                     UIActivityTypePostToWeibo,
-                                    UIActivityTypeMessage, UIActivityTypeMail,
-                                    UIActivityTypePrint, UIActivityTypeCopyToPasteboard,
-                                    UIActivityTypeAssignToContact, UIActivityTypeSaveToCameraRoll,
-                                    UIActivityTypeAddToReadingList, UIActivityTypePostToFlickr,
-                                    UIActivityTypePostToVimeo, UIActivityTypePostToTencentWeibo];
+//                                    UIActivityTypeMessage,
+//                                    UIActivityTypeMail,
+                                    UIActivityTypePrint,
+                                    UIActivityTypeCopyToPasteboard,
+                                    UIActivityTypeAssignToContact,
+                                    UIActivityTypeSaveToCameraRoll,
+                                    UIActivityTypeAddToReadingList,
+                                    UIActivityTypePostToFlickr,
+                                    UIActivityTypePostToVimeo,
+                                    UIActivityTypePostToTencentWeibo];
+    
     controller.excludedActivityTypes = excludedActivities;
     
     // Present the controller
