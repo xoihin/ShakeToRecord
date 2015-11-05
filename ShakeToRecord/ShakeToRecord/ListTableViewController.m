@@ -520,7 +520,7 @@
     
     // Exclude some activities.
     NSArray *excludedActivities = @[UIActivityTypePostToTwitter,
-                                    UIActivityTypePostToFacebook,
+//                                    UIActivityTypePostToFacebook,
                                     UIActivityTypePostToWeibo,
 //                                    UIActivityTypeMessage,
 //                                    UIActivityTypeMail,
