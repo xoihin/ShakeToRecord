@@ -20,7 +20,6 @@
     NSString *myLastFileName;
     NSString *selectedAudio;
     BOOL shouldShowSearchResults;
-    NSString *audioDuration;
     
 }
 
@@ -389,27 +388,6 @@
     //    NSLog(@"duration==%2f",audioDurationSeconds);
     
     NSString *audioDuration = @"";
-    int myMinutes = floor(audioDurationSeconds/60);
-    int mySeconds = trunc(audioDurationSeconds - myMinutes * 60);
-    
-    if (mySeconds < 10) {
-        audioDuration = [NSString stringWithFormat:@"%i:0%i", myMinutes, mySeconds];
-    } else {
-        audioDuration = [NSString stringWithFormat:@"%i:%i", myMinutes, mySeconds];
-    }
-    cell.detailTextLabel.text = audioDuration;
-
-    
-    // Retrieve audio duration
-    NSString *getAudioPath = [self.folderPath stringByAppendingPathComponent:fileNoExtension];
-    NSURL *finalUrl=[[NSURL alloc]initFileURLWithPath:getAudioPath];
-//    NSLog(@"finalUrl===%@",finalUrl);
-    
-    AVURLAsset* audioAsset = [AVURLAsset URLAssetWithURL:finalUrl options:nil];
-    CMTime durationOfAudio = audioAsset.duration;
-    float audioDurationSeconds = CMTimeGetSeconds(durationOfAudio);
-//    NSLog(@"duration==%2f",audioDurationSeconds);
-    
     int myMinutes = floor(audioDurationSeconds/60);
     int mySeconds = trunc(audioDurationSeconds - myMinutes * 60);
     
