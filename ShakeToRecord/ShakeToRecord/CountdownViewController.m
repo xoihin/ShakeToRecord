@@ -10,7 +10,7 @@
 
 @interface CountdownViewController ()
 
-#define kScreenWillDim NSLocalizedString(@"Screen will dim.", @"Screen will dim.")
+#define kScreenWillDim NSLocalizedString(@"Record starting...", @"Record starting...")
 #define kShakeAgain NSLocalizedString(@"Shake again to save recording.", @"Shake again to save recording.")
 
 

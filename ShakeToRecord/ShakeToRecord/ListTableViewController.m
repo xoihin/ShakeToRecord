@@ -310,14 +310,20 @@
             [self myStopButton:nil];
         }
         
-        if (self.view.hidden == YES) {
-            [self.view setHidden:NO];
+//        if (self.view.hidden == YES) {
+        if (self.recordButtonOutlet.enabled) {
+            // Stop record and save
+            
+//            [self.view setHidden:NO];
+            self.recordButtonOutlet.enabled = false;
             [[self navigationController] setNavigationBarHidden:NO animated:YES];
             [[self navigationController] setToolbarHidden:NO];
             // Stop recording
             [self stopRecording];
              AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
         } else {
+            // Start record
+            
              AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
             
             CountdownViewController *vc = [[CountdownViewController alloc]init];
@@ -325,9 +331,10 @@
             
             [self prepareToRecord];
             
-            [self.view setHidden:YES];
-            [[self navigationController] setNavigationBarHidden:YES animated:YES];
-            [[self navigationController] setToolbarHidden:YES];
+//            [self.view setHidden:YES];
+            self.recordButtonOutlet.enabled = true;
+//            [[self navigationController] setNavigationBarHidden:YES animated:YES];
+//            [[self navigationController] setToolbarHidden:YES];
             // Start recording
             [self startRecording];
         }

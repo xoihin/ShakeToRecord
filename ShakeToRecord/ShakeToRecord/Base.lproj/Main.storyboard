@@ -62,6 +62,10 @@
                                 <action selector="myStopButton:" destination="PlR-bX-f8S" id="KzK-OY-Thg"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="Hbb-aD-0wC"/>
+                        <barButtonItem enabled="NO" image="record22.png" id="x69-l3-3sU">
+                            <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="IGW-eP-Bvr">
                         <nil key="title"/>
@@ -77,6 +81,7 @@
                         <outlet property="pauseButtonOutlet" destination="DgH-2r-lCo" id="loj-ZS-u2G"/>
                         <outlet property="playButtonOutlet" destination="B2Y-ux-9G2" id="bRj-I8-9PJ"/>
                         <outlet property="positionSlider" destination="jwu-aR-jme" id="gnY-rJ-elt"/>
+                        <outlet property="recordButtonOutlet" destination="x69-l3-3sU" id="Muw-5Z-IEp"/>
                         <outlet property="stopButtonOutlet" destination="lAV-JH-G9M" id="z1T-4H-Uni"/>
                     </connections>
                 </tableViewController>
@@ -109,4 +114,7 @@
             <point key="canvasLocation" x="784" y="539"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="record22.png" width="22" height="22"/>
+    </resources>
 </document>

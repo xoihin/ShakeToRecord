@@ -15,9 +15,9 @@
 		F6654BEE1BCDDA870054072A /* ShakeToRecordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F6654BED1BCDDA870054072A /* ShakeToRecordTests.m */; };
 		F686738C1BCF6F7F007A30C0 /* CountdownViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F686738A1BCF6F7F007A30C0 /* CountdownViewController.m */; };
 		F686738D1BCF6F7F007A30C0 /* CountdownViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F686738B1BCF6F7F007A30C0 /* CountdownViewController.xib */; };
+		F69CAB8A1BF51166004FA3EF /* record22.png in Resources */ = {isa = PBXBuildFile; fileRef = F69CAB891BF51166004FA3EF /* record22.png */; };
 		F69E640B1BCDDB9A006E993F /* ListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F69E640A1BCDDB9A006E993F /* ListTableViewController.m */; };
 		F6A320051BD69C3B00D1CAD5 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F6A320041BD69C3B00D1CAD5 /* Reachability.m */; };
-		F6B17EDC1BD90A3500298B80 /* Info22.png in Resources */ = {isa = PBXBuildFile; fileRef = F6B17EDB1BD90A3500298B80 /* Info22.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,11 +45,11 @@
 		F68673891BCF6F7F007A30C0 /* CountdownViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountdownViewController.h; sourceTree = "<group>"; };
 		F686738A1BCF6F7F007A30C0 /* CountdownViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountdownViewController.m; sourceTree = "<group>"; };
 		F686738B1BCF6F7F007A30C0 /* CountdownViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CountdownViewController.xib; sourceTree = "<group>"; };
+		F69CAB891BF51166004FA3EF /* record22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = record22.png; sourceTree = "<group>"; };
 		F69E64091BCDDB9A006E993F /* ListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListTableViewController.h; sourceTree = "<group>"; };
 		F69E640A1BCDDB9A006E993F /* ListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListTableViewController.m; sourceTree = "<group>"; };
 		F6A320031BD69C3B00D1CAD5 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		F6A320041BD69C3B00D1CAD5 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
-		F6B17EDB1BD90A3500298B80 /* Info22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Info22.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,7 +154,7 @@
 		F6B17EDD1BD90A7500298B80 /* icons */ = {
 			isa = PBXGroup;
 			children = (
-				F6B17EDB1BD90A3500298B80 /* Info22.png */,
+				F69CAB891BF51166004FA3EF /* record22.png */,
 			);
 			name = icons;
 			sourceTree = "<group>";
@@ -241,8 +241,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F686738D1BCF6F7F007A30C0 /* CountdownViewController.xib in Resources */,
-				F6B17EDC1BD90A3500298B80 /* Info22.png in Resources */,
 				F6654BDD1BCDDA870054072A /* Main.storyboard in Resources */,
+				F69CAB8A1BF51166004FA3EF /* record22.png in Resources */,
 				F6654BE21BCDDA870054072A /* LaunchScreen.xib in Resources */,
 				F6654BDF1BCDDA870054072A /* Images.xcassets in Resources */,
 			);
