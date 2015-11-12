@@ -33,7 +33,7 @@
 
 
 - (void) setTimer {
-    secondsCount = 3;
+    secondsCount = 5;
     countdownTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timerRun) userInfo:nil repeats:YES];
 }
 
