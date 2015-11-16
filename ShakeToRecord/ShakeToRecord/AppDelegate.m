@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import "Reachability.h"
+
 
 @interface AppDelegate ()
 
@@ -19,6 +21,31 @@
     // Override point for customization after application launch.
     
 //    NSLog(@"Documents folder: %@",[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject]);
+    
+    Reachability *networkReachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus networkStatus = [networkReachability currentReachabilityStatus];
+    if (networkStatus == NotReachable) {
+        UIAlertController *alertController = [UIAlertController
+                                              alertControllerWithTitle:@"Important - No Internet Connection"
+                                              message:@"Some features may require internet connection"
+                                              preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *okAction = [UIAlertAction
+                                   actionWithTitle:NSLocalizedString(@"OK", @"OK action")
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction *action)
+                                   {
+                                       //                                       NSLog(@"OK action");
+                                   }];
+        [alertController addAction:okAction];
+        
+        dispatch_async(dispatch_get_main_queue(), ^ {
+            [self.window.rootViewController presentViewController:alertController animated:YES completion:nil];
+        });    }
+    else {
+        //        NSLog(@"There IS internet connection");
+    }
+
     
     return YES;
 }

@@ -18,14 +18,14 @@
 
 @implementation CountdownViewController
 
-@synthesize countdownTimer, countdownLabel, secondsCount, screenWillDim, shakeAgain;
+@synthesize countdownTimer, countdownLabel, secondsCount, screenWillDimLabel, shakeAgain;
 
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    screenWillDim.text = kScreenWillDim;
+    screenWillDimLabel.text = kScreenWillDim;
     shakeAgain.text = kShakeAgain;
     
     [self setTimer];

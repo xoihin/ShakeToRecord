@@ -8,8 +8,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CountdownViewController">
             <connections>
                 <outlet property="countdownLabel" destination="eao-yp-hgJ" id="a6a-xm-gtx"/>
-                <outlet property="screenWillDim" destination="Je1-6k-Kvn" id="obB-2w-peg"/>
-                <outlet property="shakeAgain" destination="F62-C1-0LE" id="zJ3-XZ-UHD"/>
+                <outlet property="screenWillDimLabel" destination="Je1-6k-Kvn" id="H2T-IQ-9rZ"/>
+                <outlet property="shakeAgain" destination="F62-C1-0LE" id="rOm-Km-WAs"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -22,7 +22,7 @@
                     <rect key="frame" x="271" y="219" width="60" height="109"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" name="Superclarendon-Regular" family="Superclarendon" pointSize="90"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="textColor" red="1" green="0.67102251089999998" blue="0.18637139550000001" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Je1-6k-Kvn">

@@ -16,6 +16,8 @@
 		F686738C1BCF6F7F007A30C0 /* CountdownViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F686738A1BCF6F7F007A30C0 /* CountdownViewController.m */; };
 		F686738D1BCF6F7F007A30C0 /* CountdownViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F686738B1BCF6F7F007A30C0 /* CountdownViewController.xib */; };
 		F69E640B1BCDDB9A006E993F /* ListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F69E640A1BCDDB9A006E993F /* ListTableViewController.m */; };
+		F6A320051BD69C3B00D1CAD5 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F6A320041BD69C3B00D1CAD5 /* Reachability.m */; };
+		F6B17EDC1BD90A3500298B80 /* Info22.png in Resources */ = {isa = PBXBuildFile; fileRef = F6B17EDB1BD90A3500298B80 /* Info22.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +47,9 @@
 		F686738B1BCF6F7F007A30C0 /* CountdownViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CountdownViewController.xib; sourceTree = "<group>"; };
 		F69E64091BCDDB9A006E993F /* ListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListTableViewController.h; sourceTree = "<group>"; };
 		F69E640A1BCDDB9A006E993F /* ListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListTableViewController.m; sourceTree = "<group>"; };
+		F6A320031BD69C3B00D1CAD5 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		F6A320041BD69C3B00D1CAD5 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		F6B17EDB1BD90A3500298B80 /* Info22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Info22.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +91,8 @@
 		F6654BD01BCDDA870054072A /* ShakeToRecord */ = {
 			isa = PBXGroup;
 			children = (
+				F6B17EDD1BD90A7500298B80 /* icons */,
+				F6A320061BD69C4200D1CAD5 /* Imported Class */,
 				F686738E1BCF6F86007A30C0 /* Coundown */,
 				F6654BD51BCDDA870054072A /* AppDelegate.h */,
 				F6654BD61BCDDA870054072A /* AppDelegate.m */,
@@ -135,6 +142,23 @@
 			name = Coundown;
 			sourceTree = "<group>";
 		};
+		F6A320061BD69C4200D1CAD5 /* Imported Class */ = {
+			isa = PBXGroup;
+			children = (
+				F6A320031BD69C3B00D1CAD5 /* Reachability.h */,
+				F6A320041BD69C3B00D1CAD5 /* Reachability.m */,
+			);
+			name = "Imported Class";
+			sourceTree = "<group>";
+		};
+		F6B17EDD1BD90A7500298B80 /* icons */ = {
+			isa = PBXGroup;
+			children = (
+				F6B17EDB1BD90A3500298B80 /* Info22.png */,
+			);
+			name = icons;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -179,11 +203,12 @@
 		F6654BC61BCDDA860054072A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = XoiAHin;
 				TargetAttributes = {
 					F6654BCD1BCDDA870054072A = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = 4886Q4GF56;
 					};
 					F6654BE61BCDDA870054072A = {
 						CreatedOnToolsVersion = 6.4;
@@ -216,6 +241,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F686738D1BCF6F7F007A30C0 /* CountdownViewController.xib in Resources */,
+				F6B17EDC1BD90A3500298B80 /* Info22.png in Resources */,
 				F6654BDD1BCDDA870054072A /* Main.storyboard in Resources */,
 				F6654BE21BCDDA870054072A /* LaunchScreen.xib in Resources */,
 				F6654BDF1BCDDA870054072A /* Images.xcassets in Resources */,
@@ -240,6 +266,7 @@
 				F6654BD71BCDDA870054072A /* AppDelegate.m in Sources */,
 				F6654BD41BCDDA870054072A /* main.m in Sources */,
 				F69E640B1BCDDB9A006E993F /* ListTableViewController.m in Sources */,
+				F6A320051BD69C3B00D1CAD5 /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,7 +345,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -355,7 +382,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -366,6 +393,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = ShakeToRecord/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -378,6 +406,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = ShakeToRecord/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
