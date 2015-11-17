@@ -20,7 +20,6 @@
     NSString *myLastFileName;
     NSString *selectedAudio;
     BOOL shouldShowSearchResults;
-    NSString *audioDuration;
     
 }
 
@@ -384,6 +383,7 @@
     int myMinutes = floor(audioDurationSeconds/60);
     int mySeconds = trunc(audioDurationSeconds - myMinutes * 60);
     
+    NSString *audioDuration = nil;
     if (mySeconds < 10) {
         audioDuration = [NSString stringWithFormat:@"%i:0%i", myMinutes, mySeconds];
     } else {
@@ -724,51 +724,10 @@
     [self disableAllPlaybackButtons];
 }
 
-//- (IBAction)infoButton:(UIBarButtonItem *)sender {
-//    
-//    [self getDuration];
-//    
-//    UIAlertController *alertController = [UIAlertController
-//                                          alertControllerWithTitle:selectedAudio
-//                                          message:audioDuration
-//                                          preferredStyle:UIAlertControllerStyleAlert];
-//    
-//    UIAlertAction* cancel = [UIAlertAction actionWithTitle:kOkay
-//                                                     style:UIAlertActionStyleCancel
-//                                                   handler:nil];
-//    [alertController addAction:cancel];
-//    [self presentViewController:alertController animated:YES completion:nil];
-//}
 
 - (void)updateSlider {
     [self.positionSlider setValue:self.myAudioPlayer.currentTime];
 }
-
-
-//- (void)getDuration {
-//    
-//    audioDuration = @"";
-//    double myDuration = self.myAudioPlayer.duration;
-//    
-//    int myMinutes = floor(myDuration/60);
-//    int mySeconds = trunc(myDuration - myMinutes * 60);
-//    
-//    if (mySeconds < 10) {
-//        audioDuration = [NSString stringWithFormat:@"%i:0%i", myMinutes, mySeconds];
-//    } else {
-//        audioDuration = [NSString stringWithFormat:@"%i:%i", myMinutes, mySeconds];
-//    }
-//}
-
-
-
-
-
-
-
-
-
-
 
 
 
