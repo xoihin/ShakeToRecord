@@ -14,6 +14,7 @@
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *playButtonOutlet;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *pauseButtonOutlet;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *stopButtonOutlet;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *recordButtonOutlet;
 
 @property (strong, nonatomic) NSTimer *myAudioTimer;
 @property (strong, nonatomic) IBOutlet UISlider *positionSlider;
